@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyYou Agency - Consigue Más Ventas</title>
-    <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Carga de Iconos Lucide (para iconos modernos) -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Configuración de Tailwind para incluir un color primario que concuerde con el logo -->
     <script>
         tailwind.config = {
             theme: {
@@ -96,37 +93,22 @@
 
 <body class="min-h-screen">
 
-    <!-- Hero Section con movimiento de fondo -->
     <header class="hero-gradient py-16 md:py-24 text-center text-white relative overflow-hidden">
-        <!-- Overlay para el texto -->
         <div class="absolute inset-0 bg-black opacity-40"></div>
         <div class="container mx-auto px-6 relative z-10">
-            <!-- Logo y nombre (simulado) -->
-            <div class="mb-4">
-                <!-- Se simula el logo usando un placeholder de cámara y texto estilizado -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto lucide lucide-aperture animate-float">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="14.12" x2="19.7" y1="9.88" y2="4.3"/>
-                    <line x1="9.88" x2="4.3" y1="9.88" y2="15.46"/>
-                    <line x1="14.12" x2="19.7" y1="14.12" y2="19.7"/>
-                    <line x1="9.88" x2="4.3" y1="14.12" y2="8.54"/>
-                    <line x1="10" x2="14" y1="2.5" y2="2.5"/>
-                    <line x1="10" x2="14" y1="21.5" y2="21.5"/>
-                    <line x1="2.5" x2="2.5" y1="10" y2="14"/>
-                    <line x1="21.5" x2="21.5" y1="10" y2="14"/>
-                </svg>
+            <!--CAJA DE LOGO-->
+            <div class="mb-8">
+                <img src="easyyouagency_v3.png" alt="Logo EasyYou Agency" class="mx-auto h-90 md:h-60 w-auto object-contain animate-float drop-shadow-2xl">
             </div>
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
                 Consigue más ventas con visitas a través de las redes sociales sin invertir en publicidad
             </h1>
             <div class="flex justify-center space-x-4 mb-8">
-                <!-- Iconos de Redes Sociales, AHORA CON LOGOS REALES -->
                 <img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Logo de Facebook" class="rounded-full w-10 h-10 shadow-lg transition duration-300 transform hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/40x40/1877F2/FFFFFF?text=F'">
                 <img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Logo de Instagram" class="rounded-full w-10 h-10 shadow-lg transition duration-300 transform hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/40x40/E4405F/FFFFFF?text=I'">
                 <img src="https://img.icons8.com/color/48/tiktok--v1.png" alt="Logo de TikTok" class="rounded-full w-10 h-10 shadow-lg transition duration-300 transform hover:scale-110" onerror="this.onerror=null; this.src='https://placehold.co/40x40/000000/FFFFFF?text=T'">
             </div>
 
-            <!-- Frase promocional menos importante, AHORA CON ESTILO MÁS DINÁMICO -->
             <p class="mt-8 mx-auto max-w-xl text-lg font-bold p-4 rounded-xl shadow-2xl border-2 border-accent-cyan text-accent-cyan bg-black/50 backdrop-blur-sm transition duration-300">
                 <i data-lucide="shield-half" class="inline-block w-5 h-5 mr-2"></i> Estamos tan seguros, de que si en dos meses no has obtenido resultados, te devolvemos el dinero.
             </p>
@@ -134,10 +116,8 @@
         </div>
     </header>
 
-    <!-- Sección de Sinceridad y Juventud -->
     <section class="py-12 px-6 bg-dark-bg text-center">
         <div class="container mx-auto">
-            <!-- TEXTO CON ESTILO MODIFICADO Y SIN SUBRAYADO -->
             <p class="text-2xl md:text-3xl font-light text-secondary-blue/80 max-w-4xl mx-auto">
                 <span class="font-extrabold text-accent-cyan transition duration-500 hover:text-white">
                     -1 año en el mercado
@@ -152,7 +132,6 @@
         </div>
     </section>
 
-    <!-- Interruptor Modo IA -->
     <div class="flex justify-center py-4 px-6">
         <button id="ia-toggle" class="px-6 py-2 rounded-full font-bold transition duration-500 shadow-xl"
             style="background-color: var(--color-primary, #007BFF); color: var(--color-bg, #0D1B2A);">
@@ -161,15 +140,12 @@
     </div>
 
 
-    <!-- Sección de Servicios con Tablas Dinámicas (Acordeón) -->
     <section class="py-16 md:py-20 px-6">
         <div class="container mx-auto">
             <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">Nuestros Servicios</h2>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Tarjeta 1: Contenido Real (Presencial) -->
                 <div id="real-content-card" class="service-card rounded-2xl p-6 lg:p-8 transform hover:shadow-secondary-blue/50">
-                    <!-- Cabecera de la Tabla -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center">
                             <i data-lucide="video" class="w-8 h-8 mr-3 text-red-500"></i>
@@ -184,7 +160,6 @@
                         <span class="font-bold text-lg text-primary-blue">Precio Más Alto</span> | Grabación Presencial (Máxima conexión)
                     </p>
 
-                    <!-- Módulo Desplegable (Accordion) - Perfecto si buscas -->
                     <div class="accordion-header bg-primary-blue/20 rounded-lg p-4 mb-4 mt-6 text-xl font-semibold">
                         <div class="flex justify-between items-center">
                             <span>Perfecto si buscas:</span>
@@ -201,7 +176,6 @@
                         </ul>
                     </div>
 
-                    <!-- Lista de Servicios (Fijos) -->
                     <h4 class="text-xl font-semibold mt-6 mb-4 border-t border-secondary-blue/50 pt-4">Servicios Incluidos:</h4>
                     <ul class="space-y-2 text-sm text-gray-200">
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> <span class="font-bold text-red-400">Grabación Presencial</span> (Diferenciador)</li>
@@ -212,16 +186,13 @@
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> Optimización redes sociales (#/palabras clave/diseños)</li>
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 4 Posts / mes</li>
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 20 Historias / mes</li>
-                        <!-- MODIFICACIÓN SOLICITADA -->
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 1 Llamada / mes feedback (que y cómo mejorar)</li>
                     </ul>
                     <p class="text-xs text-center mt-4 italic text-gray-400">Suplemento por más cantidad de videos o historias.</p>
 
                 </div>
 
-                <!-- Tarjeta 2: Contenido IA (Tecnológico/Minimalista) -->
                 <div id="ai-content-card" class="service-card rounded-2xl p-6 lg:p-8 transform hover:shadow-accent-cyan/50">
-                    <!-- Cabecera de la Tabla -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center">
                             <i data-lucide="bot" class="w-8 h-8 mr-3 text-accent-cyan"></i>
@@ -236,7 +207,6 @@
                         <span class="font-bold text-lg text-green-400">Lo que te cuesta un café al día</span> | Automatizado y Escalable
                     </p>
 
-                    <!-- Módulo Desplegable (Accordion) - Perfecto si buscas -->
                     <div class="accordion-header bg-accent-cyan/20 rounded-lg p-4 mb-4 mt-6 text-xl font-semibold">
                         <div class="flex justify-between items-center">
                             <span>Perfecto si buscas:</span>
@@ -254,7 +224,6 @@
                         </ul>
                     </div>
 
-                    <!-- Lista de Servicios (Fijos) -->
                     <h4 class="text-xl font-semibold mt-6 mb-4 border-t border-accent-cyan/50 pt-4">Servicios Incluidos:</h4>
                     <ul class="space-y-2 text-sm text-gray-200">
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 4 Reels / mes</li>
@@ -264,7 +233,6 @@
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> Optimización redes sociales (#/palabras clave/diseños)</li>
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 4 Posts / mes</li>
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 20 Historias / mes</li>
-                        <!-- MODIFICACIÓN SOLICITADA -->
                         <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-400"></i> 1 Llamada / mes feedback (que y cómo mejorar)</li>
                     </ul>
                     <p class="text-xs text-center mt-4 italic text-gray-400">Suplemento por más cantidad de videos o historias.</p>
@@ -272,16 +240,13 @@
                 </div>
             </div>
 
-            <!-- Call to Action - DOS BOTONES AHORA -->
             <div class="text-center mt-12">
                 <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                    <!-- Botón 1: Quiero Saber Precios -->
                     <a href="https://forms.gle/qstUNZPmNWe4c8gu9" target="_blank" class="inline-block px-8 py-3 text-lg font-bold rounded-full transition duration-500 transform hover:scale-105 shadow-2xl"
                         style="background-color: var(--color-primary, #00C9FF); color: var(--color-bg, #0D1B2A); border: 2px solid var(--color-primary, #00C9FF);">
                         Quiero Saber Precios
                     </a>
                     
-                    <!-- Botón 2: Quiero Ver Ejemplos (Mismo enlace y estilo visual) -->
                     <a href="https://forms.gle/qstUNZPmNWe4c8gu9" target="_blank" class="inline-block px-8 py-3 text-lg font-bold rounded-full transition duration-500 transform hover:scale-105 shadow-2xl bg-dark-bg text-primary-blue border-2 border-primary-blue hover:border-accent-cyan hover:text-accent-cyan">
                         Quiero Ver Ejemplos
                     </a>
@@ -291,49 +256,42 @@
         </div>
     </section>
 
-    <!-- Sección de Diferencias (Minimalista y Clara) -->
     <section class="py-16 md:py-24 px-6 bg-dark-bg/50">
         <div class="container mx-auto">
             <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 text-primary-blue">¿En qué somos distintos?</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <!-- Diferencia 1: Precios -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="dollar-sign" class="w-8 h-8 mb-3 text-green-400"></i>
                     <h3 class="text-xl font-bold mb-2">Precios Ultra Competitivos</h3>
                     <p class="text-sm text-gray-300">Al ser una agencia joven (-1 año), podemos ofrecer grabación y producción a un coste muy por debajo del mercado.</p>
                 </div>
 
-                <!-- Diferencia 2: Ahorro Logístico IA -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="cpu" class="w-8 h-8 mb-3 text-accent-cyan"></i>
                     <h3 class="text-xl font-bold mb-2">Ahorro Logístico gracias al dominio de la IA</h3>
                     <p class="text-sm text-gray-300">Tu equipo usa IA para automatizar, agilizar y reducir procesos, lo que se traduce en menor coste para ti.</p>
                 </div>
 
-                <!-- Diferencia 3: Equipo Generación Z -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="rocket" class="w-8 h-8 mb-3 text-red-400"></i>
                     <h3 class="text-xl font-bold mb-2">Equipo Generación Z</h3>
                     <p class="text-sm text-gray-300">Entendemos profundamente cómo funcionan las redes, qué formatos consumen las personas y qué contenido realmente conecta.</p>
                 </div>
 
-                <!-- Diferencia 4: Garantía de Resultados -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="shield-check" class="w-8 h-8 mb-3 text-yellow-400"></i>
                     <h3 class="text-xl font-bold mb-2">Garantía de Resultados Reales</h3>
                     <p class="text-sm text-gray-300">Si en 2 meses no obtienes resultados, se te devuelve el dinero. Cero riesgo para ti.</p>
                 </div>
 
-                <!-- Diferencia 5: Especialización y Recursos -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="zap" class="w-8 h-8 mb-3 text-purple-400"></i>
                     <h3 class="text-xl font-bold mb-2">Primera agencia especializada en microcontenido</h3>
                     <p class="text-sm text-gray-300">No solo creamos contenido corto efectivo, también facilitamos todo lo necesario para producirlo rápido y sin complicaciones.</p>
                 </div>
 
-                <!-- Diferencia 6: Cercanía -->
                 <div class="p-6 rounded-xl border border-secondary-blue/50 hover:border-accent-cyan transition duration-300 transform hover:shadow-lg">
                     <i data-lucide="heart" class="w-8 h-8 mb-3 text-pink-400"></i>
                     <h3 class="text-xl font-bold mb-2">Cercanía y Trato Humano</h3>
@@ -343,7 +301,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-6 text-center text-sm text-gray-500 border-t border-secondary-blue/30">
         <p>&copy; 2025 EasyYou Agency. Todos los derechos reservados.</p>
     </footer>
