@@ -29,12 +29,14 @@
                         dark: '#050505',
                         primary: '#6d28d9', // Morado intenso
                         accent: '#06b6d4',  // Cyan/Turquesa
+                        success: '#10b981', // Esmeralda para el nuevo modulo
                         glass: 'rgba(255, 255, 255, 0.05)',
                     },
                     animation: {
                         'blob': 'blob 7s infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pan': 'pan 15s linear infinite alternate', // Nueva animación para las fotos
                     },
                     keyframes: {
                         blob: {
@@ -46,6 +48,10 @@
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-20px)' },
+                        },
+                        pan: {
+                            '0%': { objectPosition: 'center top' },
+                            '100%': { objectPosition: 'center bottom' }
                         }
                     }
                 }
@@ -206,7 +212,6 @@
             <div class="text-2xl font-display font-bold tracking-tighter">
                 EASYYOU<span class="text-primary">.</span>
             </div>
-            <!-- CAMBIO AQUÍ: Ahora usa un evento onclick para centrar el elemento en pantalla -->
             <a href="#precios" onclick="event.preventDefault(); document.getElementById('precios').scrollIntoView({behavior: 'smooth', block: 'center'});" class="glass-button px-6 py-2 rounded-full text-sm font-semibold">
                 Contactar
             </a>
@@ -259,9 +264,10 @@
         <div class="container mx-auto px-4 max-w-7xl">
             <h3 class="text-3xl font-display font-bold text-center mb-16">Elige tu Estrategia</h3>
 
-            <div class="grid md:grid-cols-2 gap-8 items-start">
+            <!-- CAMBIO: Ahora es una rejilla de 3 columnas en pantallas grandes (lg:grid-cols-3) -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- PLAN 1: CONTENIDO REAL (ACTUALIZADO) -->
+                <!-- PLAN 1: CONTENIDO REAL -->
                 <div class="glass-card rounded-3xl p-8 hover:border-primary/50 transition-colors duration-300 reveal flex flex-col h-full">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-primary/20 p-4 rounded-2xl text-primary">
@@ -299,7 +305,7 @@
                         </div>
                     </div>
 
-                    <!-- NUEVA SECCIÓN: AUDITORÍA REAL -->
+                    <!-- AUDITORÍA REAL -->
                     <div class="mt-auto pt-4 border-t border-gray-700">
                         <p class="text-xs text-primary font-bold mb-2 uppercase tracking-wider">
                             <i class="fa-solid fa-sparkles mr-1"></i> ¿Sirve para mi nicho?
@@ -316,10 +322,9 @@
                     </div>
                 </div>
 
-                <!-- PLAN 2: CONTENIDO IA (ACTUALIZADO) -->
+                <!-- PLAN 2: CONTENIDO IA -->
                 <div class="glass-card rounded-3xl p-8 hover:border-accent/50 transition-colors duration-300 reveal delay-200 relative overflow-hidden flex flex-col h-full">
                     
-                    <!-- CINTA CORREGIDA -->
                     <div class="absolute top-5 -right-12 w-48 py-1 bg-accent text-black font-bold text-xs text-center rotate-45 shadow-lg z-10">
                         1 CAFÉ/DÍA€
                     </div>
@@ -358,7 +363,7 @@
                         </div>
                     </div>
 
-                    <!-- SECCIÓN: AUDITORÍA IA -->
+                    <!-- AUDITORÍA IA -->
                     <div class="mt-auto pt-4 border-t border-gray-700">
                         <p class="text-xs text-accent font-bold mb-2 uppercase tracking-wider">
                             <i class="fa-solid fa-sparkles mr-1"></i> ¿Sirve para mi nicho?
@@ -372,6 +377,82 @@
                         <div id="audit-result-ai" class="hidden mt-3 text-xs bg-accent/10 p-3 rounded-lg border border-accent/20">
                             <!-- Resultado IA aquí -->
                         </div>
+                    </div>
+                </div>
+
+                <!-- NUEVO PLAN 3: CONTENIDO QUE FUNCIONA (NUEVO) -->
+                <div class="glass-card rounded-3xl p-8 hover:border-success/50 transition-colors duration-300 reveal delay-200 flex flex-col h-full relative overflow-hidden">
+                    <!-- Efecto de borde superior sutil -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-success to-emerald-600"></div>
+
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-success/20 p-4 rounded-2xl text-success">
+                            <i class="fa-solid fa-chart-line text-3xl"></i>
+                        </div>
+                        <div class="text-right">
+                             <span class="bg-success/20 text-success text-xs font-bold px-3 py-1 rounded-full border border-success/30">PAGO ÚNICO</span>
+                        </div>
+                    </div>
+
+                    <h4 class="text-2xl font-bold mb-1">Contenido que FUNCIONA</h4>
+                    <p class="text-xs text-gray-500 font-bold mb-4 uppercase tracking-wider">O no publiques nada</p>
+                    
+                    <p class="text-gray-400 mb-6 border-b border-gray-800 pb-4 text-sm leading-relaxed">
+                        Deja de perder tiempo creando a ciegas. Este módulo analiza tu mercado y te dice <strong>exactamente qué publicar</strong> para conseguir visitas.
+                    </p>
+
+                    <!-- Lista de beneficios -->
+                    <div class="space-y-3 text-gray-300 text-sm flex-1 mb-6">
+                        <p><i class="fa-solid fa-check text-success mr-2"></i>Decide en 10 seg, no en 8 horas</p>
+                        <p><i class="fa-solid fa-check text-success mr-2"></i>Ideas directas a tu calendario</p>
+                        <p><i class="fa-solid fa-check text-success mr-2"></i>Marca ❌ o ✔️ lo que funciona</p>
+                        <p><i class="fa-solid fa-check text-success mr-2"></i>El sistema aprende de ti</p>
+                        <p><i class="fa-solid fa-check text-success mr-2"></i>Configuración nicho incluida</p>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="mb-6 p-4 bg-white/5 rounded-xl border border-white/10 text-center relative group overflow-hidden">
+                        <div class="absolute inset-0 bg-success/5 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                        <span class="block text-4xl font-bold text-white relative z-10">49 €</span>
+                        <span class="text-xs text-gray-400 block mt-1 relative z-10">Tuyo para siempre. Sin cuotas.</span>
+                    </div>
+
+                    <!-- Desplegable Visual App -->
+                    <div class="accordion-item bg-black/40 rounded-xl overflow-hidden mb-4 border border-white/5">
+                        <button class="w-full px-4 py-3 flex justify-between items-center text-left text-xs font-bold text-gray-300 hover:text-white transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span><i class="fa-regular fa-eye mr-2 text-success"></i>MIRA LA INTERFAZ DE LA APP</span>
+                            <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 space-y-4">
+                                <p class="text-xs text-gray-500 mb-2">Entiende en segundos por qué esto lo cambia todo:</p>
+                                <!-- IMAGEN 1: CAMBIA EL SRC POR TU FOTO DE LA APP -->
+                                <div class="rounded-lg overflow-hidden border border-white/10 relative group h-32">
+                                    <img src="<a href="https://ibb.co/gZxQwMSn"><img src="https://i.ibb.co/pjSNZvfm/Captura-de-pantalla-2025-12-19-161509.png" alt="Captura-de-pantalla-2025-12-19-161509" border="0"></a>" 
+                                         alt="Interfaz App 1" 
+                                         class="w-full h-full object-cover transform transition-transform duration-[10s] hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+                                        <span class="text-xs font-bold text-white">1. Análisis de Mercado</span>
+                                    </div>
+                                </div>
+                                <!-- IMAGEN 2: CAMBIA EL SRC POR TU FOTO DE LA APP -->
+                                <div class="rounded-lg overflow-hidden border border-white/10 relative group h-32">
+                                    <img src="<a href="https://ibb.co/NdgTPpN7"><img src="https://i.ibb.co/ksVmf0DM/Captura-de-pantalla-2025-12-19-161435.png" alt="Captura-de-pantalla-2025-12-19-161435" border="0"></a>" 
+                                         alt="Interfaz App 2" 
+                                         class="w-full h-full object-cover transform transition-transform duration-[10s] hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+                                        <span class="text-xs font-bold text-white">2. Calendario Inteligente</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enlace Final -->
+                    <div class="mt-auto text-center pt-2">
+                        <a href="#precios" onclick="event.preventDefault(); document.getElementById('precios').scrollIntoView({behavior: 'smooth', block: 'center'});" class="text-sm font-bold text-success hover:text-white transition-colors underline decoration-success/50 underline-offset-4 flex items-center justify-center gap-2">
+                            Si quieres más información contáctanos <i class="fa-solid fa-arrow-right -rotate-45"></i>
+                        </a>
                     </div>
                 </div>
 
