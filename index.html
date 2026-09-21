@@ -207,22 +207,60 @@
                 linear-gradient(180deg, #090a0f 0%, #050507 100%);
         }
 
-        /* EFECTO CORTINA / VELO FLUIDO BIDIRECCIONAL */
+        /* SECCIONES ESTABLES Y VISIBLES (GARANTIZA NUNCA QUEDARSE EN NEGRO) */
         .curtain-section {
-            opacity: 0;
-            filter: blur(10px);
-            transform: translateY(40px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                        filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform, filter;
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
             position: relative;
         }
 
-        .curtain-section.is-revealed {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0);
+        /* REPRODUCTOR DE VÍDEO CON BOTÓN DE PLAY/PAUSA CENTRADO */
+        .video-wrapper {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            background: #000000;
+        }
+
+        .video-play-btn {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 58px;
+            height: 58px;
+            border-radius: 9999px;
+            background: rgba(5, 5, 7, 0.78);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 15;
+            pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .video-wrapper:hover .video-play-btn {
+            transform: scale(1.08);
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 12px 35px rgba(255, 255, 255, 0.25);
+        }
+
+        .video-wrapper.is-playing .video-play-btn {
+            opacity: 0;
+            transform: scale(0.85);
+        }
+
+        .video-wrapper.is-playing:hover .video-play-btn {
+            opacity: 0.85;
+            transform: scale(1);
         }
 
         /* PRECIOS BORROSOS Y DESBLOQUEO TÉCNICO */
@@ -249,15 +287,10 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* PASOS SECUENCIALES BLOQUE 3 */
+        /* PASOS SECUENCIALES BLOQUE 3 (SIEMPRE VISIBLES) */
         .step-appear {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .step-appear.active {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         /* ANIMACIÓN DE ENTRADA DEL LOGO TÉCNICO */
@@ -291,42 +324,6 @@
             45% { filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.25)) brightness(0.95); }
             65% { filter: drop-shadow(0 0 35px rgba(255, 255, 255, 0.7)) brightness(1.8); }
             100% { filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.3)); }
-        }
-
-        /* SISTEMA SPOTLIGHT ELEGANTE CON TELÓN TRANSLÚCIDO */
-        #spotlight-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 5, 7, 0.68);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            z-index: 40;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        #spotlight-backdrop.is-active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .spotlightable {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        box-shadow 0.4s ease, 
-                        border-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .spotlightable.is-spotlighted {
-            position: relative;
-            z-index: 45 !important;
-            transform: scale(1.015) translateY(-6px) !important;
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25),
-                        0 24px 60px -12px rgba(0, 0, 0, 0.95), 
-                        0 0 30px rgba(56, 189, 248, 0.18) !important;
-            border-color: rgba(255, 255, 255, 0.4) !important;
-            background: #0d0e14 !important;
         }
 
         /* LÍNEA SUPERIOR DE PROGRESO */
@@ -408,9 +405,6 @@
 
     <!-- Barra de progreso -->
     <div id="reading-progress"></div>
-
-    <!-- Fondo de enfoque spotlight -->
-    <div id="spotlight-backdrop" aria-label="Cerrar foco"></div>
 
     <!-- HEADER EJECUTIVO -->
     <header class="fixed top-4 left-0 w-full z-50 px-4 sm:px-8">
@@ -612,11 +606,14 @@
                                     <span class="font-mono text-[11px] font-semibold text-white uppercase tracking-wider">Caso #01</span>
                                     <span class="font-mono text-[10px] text-zinc-400">01 / 03</span>
                                 </div>
-                                <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=CASO+CLIENTE+01">
-                                        <source src="video-suarez.mp4" type="video/mp4">
+                                <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                    <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                        <source src="video-suarez.mp4#t=0.001" type="video/mp4">
                                         Tu navegador no soporta vídeo HTML5.
                                     </video>
+                                    <div class="video-play-btn" aria-hidden="true">
+                                        <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -628,11 +625,14 @@
                                     <span class="font-mono text-[11px] font-semibold text-white uppercase tracking-wider">Caso #02</span>
                                     <span class="font-mono text-[10px] text-zinc-400">02 / 03</span>
                                 </div>
-                                <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=CASO+CLIENTE+02">
-                                        <source src="video-sergio.mp4" type="video/mp4">
+                                <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                    <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                        <source src="video-sergio.mp4#t=0.001" type="video/mp4">
                                         Tu navegador no soporta vídeo HTML5.
                                     </video>
+                                    <div class="video-play-btn" aria-hidden="true">
+                                        <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -644,11 +644,14 @@
                                     <span class="font-mono text-[11px] font-semibold text-white uppercase tracking-wider">Caso #03</span>
                                     <span class="font-mono text-[10px] text-zinc-400">03 / 03</span>
                                 </div>
-                                <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=CASO+CLIENTE+03">
-                                        <source src="video-pedro.mp4" type="video/mp4">
+                                <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                    <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                        <source src="video-pedro.mp4#t=0.001" type="video/mp4">
                                         Tu navegador no soporta vídeo HTML5.
                                     </video>
+                                    <div class="video-play-btn" aria-hidden="true">
+                                        <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -689,103 +692,121 @@
                     <span>algunos vídeos de los que hacemos</span>
                 </div>
 
-                <!-- CARRUSEL 6 VÍDEOS DE EJEMPLO -->
+                <!-- CARRUSEL 6 VÍDEOS DE EJEMPLO EN ORDEN EXACTO -->
                 <div class="max-w-5xl mx-auto mb-16 relative">
                     <div class="carousel-viewport">
                         <div id="examples-track" class="carousel-track">
 
-                            <!-- VÍDEO 1: lunaywanda.mp4 -->
+                            <!-- VÍDEO 1: lunaywanda.mp4 (Vertical) -->
                             <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #01</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">01 // Luna y Wanda</span>
                                         <span class="font-mono text-[10px] text-zinc-400">1 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+01">
-                                            <source src="lunaywanda.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="lunaywanda.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VÍDEO 2: preguntas-espontaneas.mp4 -->
-                            <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
+                            <!-- VÍDEO 2: sueno-ia.mp4 (HORIZONTAL 16:9 FORMATO YOUTUBE) -->
+                            <div class="carousel-slide w-[320px] sm:w-[420px] md:w-[480px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #02</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">02 // Sueño IA (16:9)</span>
                                         <span class="font-mono text-[10px] text-zinc-400">2 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+02">
-                                            <source src="preguntas-espontaneas.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-video rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="sueno-ia.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VÍDEO 3: myflowxx.mp4 -->
+                            <!-- VÍDEO 3: myflowxx.mp4 (Vertical) -->
                             <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #03</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">03 // Myflowxx</span>
                                         <span class="font-mono text-[10px] text-zinc-400">3 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+03">
-                                            <source src="myflowxx.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="myflowxx.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VÍDEO 4: sueno-ia.mp4 -->
+                            <!-- VÍDEO 4: embarazo.mp4 (Vertical) -->
                             <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #04</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">04 // Embarazada</span>
                                         <span class="font-mono text-[10px] text-zinc-400">4 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+04">
-                                            <source src="sueno-ia.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="embarazo.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VÍDEO 5: jimyus.mp4 -->
+                            <!-- VÍDEO 5: jimyus.mp4 (Vertical) -->
                             <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #05</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">05 // Jimyus</span>
                                         <span class="font-mono text-[10px] text-zinc-400">5 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+05">
-                                            <source src="jimyus.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="jimyus.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VÍDEO 6: embarazo.mp4 -->
+                            <!-- VÍDEO 6: preguntas-espontaneas.mp4 (Vertical) -->
                             <div class="carousel-slide w-[240px] sm:w-[280px] md:w-[310px] px-2 sm:px-3">
                                 <div class="tilt-card rounded-2xl border border-white/15 bg-surface p-4 shadow-xl">
                                     <div class="flex items-center justify-between mb-2.5 px-1 border-b border-white/5 pb-2">
-                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">Vídeo #06</span>
+                                        <span class="font-mono text-[10px] text-zinc-300 uppercase tracking-wider">06 // Preguntas</span>
                                         <span class="font-mono text-[10px] text-zinc-400">6 / 6</span>
                                     </div>
-                                    <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
-                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/0d0d12/f4f4f6?text=VIDEO+06">
-                                            <source src="embarazo.mp4" type="video/mp4">
+                                    <div class="video-wrapper relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-white/10">
+                                        <video class="w-full h-full object-cover" playsinline preload="metadata">
+                                            <source src="preguntas-espontaneas.mp4#t=0.001" type="video/mp4">
                                             Tu navegador no soporta vídeo HTML5.
                                         </video>
+                                        <div class="video-play-btn" aria-hidden="true">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1727,65 +1748,49 @@
                 }
             }, { passive: true });
 
-            // 6. VISIBILIDAD ESTABLE DE SECCIONES (EVITA PANTALLAZOS NEGROS)
-            const curtainSections = document.querySelectorAll('.curtain-section');
-            curtainSections.forEach(section => {
-                section.classList.add('is-revealed');
-            });
+            // 6. GESTIÓN DE VÍDEOS Y BOTONES CENTRADOS DE REPRODUCCIÓN
+            function setupVideoPlayInteractions() {
+                const wrappers = document.querySelectorAll('.video-wrapper');
+                wrappers.forEach(wrapper => {
+                    const video = wrapper.querySelector('video');
+                    const btn = wrapper.querySelector('.video-play-btn');
+                    const icon = btn ? btn.querySelector('i') : null;
 
-            // 7. SISTEMA SPOTLIGHT ELEGANTE Y SEGURO (SE DESACTIVA AL HACER SCROLL)
-            const spotlightBackdrop = document.getElementById('spotlight-backdrop');
-            const spotlightItems = document.querySelectorAll('.spotlightable');
-            let currentSpotlighted = null;
+                    if (!video) return;
 
-            function activateSpotlight(element) {
-                if (currentSpotlighted && currentSpotlighted !== element) {
-                    currentSpotlighted.classList.remove('is-spotlighted');
-                }
-                currentSpotlighted = element;
-                element.classList.add('is-spotlighted');
-                if (spotlightBackdrop) {
-                    spotlightBackdrop.classList.add('is-active');
-                }
-            }
+                    wrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (video.paused) {
+                            // Pausar cualquier otro vídeo activo para evitar solapamiento de audio
+                            document.querySelectorAll('video').forEach(v => {
+                                if (v !== video) {
+                                    v.pause();
+                                    const otherWrap = v.closest('.video-wrapper');
+                                    if (otherWrap) otherWrap.classList.remove('is-playing');
+                                    const otherIcon = otherWrap ? otherWrap.querySelector('.video-play-btn i') : null;
+                                    if (otherIcon) otherIcon.className = 'fa-solid fa-play text-lg ml-0.5';
+                                }
+                            });
+                            video.play();
+                            wrapper.classList.add('is-playing');
+                            if (icon) icon.className = 'fa-solid fa-pause text-lg';
+                        } else {
+                            video.pause();
+                            wrapper.classList.remove('is-playing');
+                            if (icon) icon.className = 'fa-solid fa-play text-lg ml-0.5';
+                        }
+                    });
 
-            function clearSpotlight() {
-                if (currentSpotlighted) {
-                    currentSpotlighted.classList.remove('is-spotlighted');
-                    currentSpotlighted = null;
-                }
-                if (spotlightBackdrop) {
-                    spotlightBackdrop.classList.remove('is-active');
-                }
-            }
-
-            spotlightItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input') || e.target.closest('video')) {
-                        return;
-                    }
-                    if (item.classList.contains('is-spotlighted')) {
-                        clearSpotlight();
-                    } else {
-                        activateSpotlight(item);
-                    }
+                    video.addEventListener('ended', () => {
+                        wrapper.classList.remove('is-playing');
+                        if (icon) icon.className = 'fa-solid fa-play text-lg ml-0.5';
+                    });
                 });
-            });
-
-            if (spotlightBackdrop) {
-                spotlightBackdrop.addEventListener('click', clearSpotlight);
             }
 
-            // Al hacer scroll o pulsar Escape, cerrar el foco para evitar que la pantalla quede oscura
-            window.addEventListener('scroll', () => {
-                if (currentSpotlighted) clearSpotlight();
-            }, { passive: true });
+            setupVideoPlayInteractions();
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') clearSpotlight();
-            });
-
-            // 8. CARRUSELES COVERFLOW LATERAL CON REPRODUCCIÓN CENTRADA
+            // 7. CARRUSELES COVERFLOW LATERAL CON REPRODUCCIÓN CENTRADA
             function initCoverflowCarousel(trackId, prevBtnId, nextBtnId, dotClass) {
                 const track = document.getElementById(trackId);
                 const prevBtn = document.getElementById(prevBtnId);
@@ -1812,18 +1817,17 @@
                         const video = slide.querySelector('video');
                         const wrapper = slide.querySelector('.video-wrapper');
                         const icon = wrapper ? wrapper.querySelector('.video-play-btn i') : null;
+
                         if (idx === currentIndex) {
                             slide.classList.add('is-active');
                             slide.classList.remove('is-inactive');
                         } else {
                             slide.classList.remove('is-active');
                             slide.classList.add('is-inactive');
-                            if (video) {
+                            if (video && !video.paused) {
                                 video.pause();
                                 if (wrapper) wrapper.classList.remove('is-playing');
-                                if (icon) {
-                                    icon.className = 'fa-solid fa-play text-base ml-0.5';
-                                }
+                                if (icon) icon.className = 'fa-solid fa-play text-lg ml-0.5';
                             }
                         }
                     });
@@ -1846,46 +1850,12 @@
                 if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
 
                 slides.forEach((slide, idx) => {
-                    const wrapper = slide.querySelector('.video-wrapper');
-                    const video = slide.querySelector('video');
-                    const icon = wrapper ? wrapper.querySelector('.video-play-btn i') : null;
-
-                    if (wrapper && video) {
-                        wrapper.addEventListener('click', () => {
-                            if (idx !== currentIndex) {
-                                goToSlide(idx);
-                                return;
-                            }
-                            if (video.paused) {
-                                // Pausar cualquier otro video activo
-                                document.querySelectorAll('video').forEach(v => {
-                                    if (v !== video) {
-                                        v.pause();
-                                        const w = v.closest('.video-wrapper');
-                                        if (w) w.classList.remove('is-playing');
-                                        const ic = w ? w.querySelector('.video-play-btn i') : null;
-                                        if (ic) ic.className = 'fa-solid fa-play text-base ml-0.5';
-                                    }
-                                });
-                                video.play();
-                                wrapper.classList.add('is-playing');
-                                if (icon) icon.className = 'fa-solid fa-pause text-base';
-                            } else {
-                                video.pause();
-                                wrapper.classList.remove('is-playing');
-                                if (icon) icon.className = 'fa-solid fa-play text-base ml-0.5';
-                            }
-                        });
-
-                        video.addEventListener('ended', () => {
-                            wrapper.classList.remove('is-playing');
-                            if (icon) icon.className = 'fa-solid fa-play text-base ml-0.5';
-                        });
-                    } else {
-                        slide.addEventListener('click', () => {
-                            if (idx !== currentIndex) goToSlide(idx);
-                        });
-                    }
+                    slide.addEventListener('click', (e) => {
+                        if (idx !== currentIndex) {
+                            e.preventDefault();
+                            goToSlide(idx);
+                        }
+                    });
                 });
 
                 dots.forEach((dot, idx) => {
@@ -1912,7 +1882,7 @@
             initCoverflowCarousel('clients-track', 'clients-prev', 'clients-next', 'clients-dot');
             initCoverflowCarousel('examples-track', 'examples-prev', 'examples-next', 'examples-dot');
 
-            // 9. CALCULADORA DE RETORNO ROAS
+            // 8. CALCULADORA DE RETORNO ROAS
             const currentRevInput = document.getElementById('calc-current-revenue');
             const adsSpendInput = document.getElementById('calc-ads-spend');
             const agencySpendInput = document.getElementById('calc-agency-spend');
