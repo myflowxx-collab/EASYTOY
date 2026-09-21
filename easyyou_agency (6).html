@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EASYYOU Agency | Adquisición, Estrategia y Crecimiento</title>
+
+    <!-- Google Fonts: Syne, Plus Jakarta Sans, Caveat & Kalam -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kalam:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Syne"', 'sans-serif'],
+                        hand: ['"Caveat"', 'cursive'],
+                        marker: ['"Kalam"', 'cursive'],
+                    },
+                    colors: {
+                        void: '#030305',
+                        brandPurple: '#7c3aed',
+                        brandCyan: '#06b6d4',
+                        brandLime: '#10b981',
+                        whatsapp: '#25D366',
+                    },
+                    animation: {
+                        'bounce-subtle': 'bounceSubtle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030305;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 0. PANTALLA DE CARGA (PRELOADER DE ESTUDIO) */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #030305;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, visibility;
+        }
+        #preloader.preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .preloader-bar-bg {
+            width: 180px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            margin-top: 18px;
+        }
+        .preloader-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #06b6d4, #7c3aed);
+            transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* BOTONES MAGNÉTICOS CON EFECTO RELLENO */
+        .btn-magnetic {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+            will-change: transform;
+        }
+        .btn-magnetic-fill {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent);
+            transform: translateY(102%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .btn-magnetic:hover .btn-magnetic-fill {
+            transform: translateY(0%);
+        }
+        .btn-magnetic-content {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* TARJETAS TILT 3D CON BRILLO MOUSE-FOLLOWING */
+        .tilt-card {
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+            will-change: transform;
+        }
+        .tilt-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(6, 182, 212, 0.12), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 15;
+        }
+        .tilt-card:hover::after {
+            opacity: 1;
+        }
+
+        /* ACCESIBILIDAD: PREFERS-REDUCED-MOTION */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .curtain-section {
+                opacity: 1 !important;
+                filter: none !important;
+                transform: none !important;
+            }
+            .tilt-card {
+                transform: none !important;
+            }
+            #preloader {
+                display: none !important;
+            }
+        }
+
+        /* FONDOS DIFERENCIADOS PARA CADA BLOQUE */
+        
+        /* 1. Fondo Bloque 1: Cyber Noir */
+        .block-noir {
+            background: radial-gradient(circle at 50% 15%, #180d2e 0%, #05040a 75%);
+            border-bottom: 2px solid rgba(124, 58, 237, 0.25);
+        }
+
+        /* 2. Fondo Bloque 2: Studio Indigo Blueprint (Vídeos y portfolio) */
+        .block-blueprint {
+            background: 
+                linear-gradient(90deg, rgba(6, 182, 212, 0.04) 1px, transparent 1px),
+                linear-gradient(rgba(6, 182, 212, 0.04) 1px, transparent 1px),
+                linear-gradient(180deg, #070a13 0%, #0b111e 100%);
+            background-size: 32px 32px, 32px 32px, 100% 100%;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.25);
+        }
+
+        /* 3. Fondo Bloque 3: Obsidian Plum (Preguntas, tarifas y combo) */
+        .block-studio {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.09) 0%, transparent 55%),
+                linear-gradient(180deg, #0e0717 0%, #050308 100%);
+            border-bottom: 2px solid rgba(124, 58, 237, 0.3);
+        }
+
+        /* 4. Fondo Bloque 4: Carbon Workshop (Producción puntual) */
+        .block-workshop {
+            background: 
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 14px),
+                linear-gradient(180deg, #0d0d12 0%, #060608 100%);
+        }
+
+        /* Subrayado artesanal */
+        .hand-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .hand-underline::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            bottom: -6px;
+            width: calc(100% + 8px);
+            height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M2,14 Q 30,2 60,15 T 98,6' stroke='%2306b6d4' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        /* EFECTO CORTINA / VELO FLUIDO DE SCROLL (Curtain Reveal) */
+        .curtain-section {
+            opacity: 0;
+            filter: blur(14px);
+            transform: translateY(60px) scale(0.985);
+            transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform, filter;
+            position: relative;
+        }
+
+        .curtain-section::before {
+            content: '';
+            position: absolute;
+            top: -70px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(3, 3, 5, 0.95), transparent);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 1s ease;
+            z-index: 10;
+        }
+
+        .curtain-section.is-revealed {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0) scale(1);
+        }
+
+        .curtain-section.is-revealed::before {
+            opacity: 0;
+        }
+
+        /* Efecto de precios borrosos y desbloqueo */
+        .price-blurred {
+            filter: blur(11px);
+            user-select: none;
+            -webkit-user-select: none;
+            pointer-events: none;
+            opacity: 0.55;
+            transition: filter 0.5s ease, opacity 0.5s ease;
+            cursor: pointer;
+        }
+
+        .price-unblurred {
+            filter: blur(0px) !important;
+            opacity: 1 !important;
+            user-select: auto !important;
+            pointer-events: auto !important;
+            animation: stampPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes stampPop {
+            0% { transform: scale(0.92); filter: blur(4px); }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); filter: blur(0); }
+        }
+
+        /* Revelado progresivo de las preguntas en Bloque 3 */
+        .step-appear {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .step-appear.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tarjetas dinámicas con microinteracciones suaves */
+        .card-dynamic {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-dynamic:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Animación fluida de entrada del Logo con Zoom y Destello Retro Neón */
+        .logo-retro-entrance {
+            animation: logoRetroZoom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       logoRetroGlow 3s ease-in-out 0.2s forwards;
+            transform-origin: center center;
+            will-change: transform, opacity, filter;
+        }
+
+        @keyframes logoRetroZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.68) translateY(-22px);
+                filter: blur(14px) brightness(0.2);
+            }
+            50% {
+                opacity: 0.95;
+                transform: scale(1.05) translateY(2px);
+                filter: blur(0px) brightness(1.6);
+            }
+            80% {
+                transform: scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes logoRetroGlow {
+            0% {
+                filter: drop-shadow(0 0 0px transparent);
+            }
+            20% {
+                /* Primer encendido retro intenso */
+                filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.95)) 
+                       drop-shadow(0 0 65px rgba(124, 58, 237, 0.8)) 
+                       brightness(1.8);
+            }
+            38% {
+                /* Se apaga / baja intensidad */
+                filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.2)) 
+                       brightness(0.85);
+            }
+            54% {
+                /* Segundo fogonazo de iluminación */
+                filter: drop-shadow(0 0 45px rgba(6, 182, 212, 1)) 
+                       drop-shadow(0 0 85px rgba(124, 58, 237, 0.95)) 
+                       brightness(2);
+            }
+            72% {
+                /* Transición suave descendente */
+                filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.5)) 
+                       drop-shadow(0 0 40px rgba(124, 58, 237, 0.3)) 
+                       brightness(1.2);
+            }
+            100% {
+                /* Estabilizado con resplandor elegante */
+                filter: drop-shadow(0 0 18px rgba(6, 182, 212, 0.35));
+            }
+        }
+
+        /* Sistema de Enfoque y Foco Fluido al hacer click */
+        #spotlight-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 3, 6, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #spotlight-backdrop.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Elemento elevado con foco activo */
+        .spotlightable {
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), 
+                        box-shadow 0.4s ease, 
+                        border-color 0.3s ease, 
+                        filter 0.4s ease;
+            cursor: pointer;
+        }
+
+        .spotlightable.is-spotlighted {
+            position: relative;
+            z-index: 45 !important;
+            transform: scale(1.025) translateY(-8px) !important;
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.7),
+                        0 25px 60px -10px rgba(0, 0, 0, 0.9), 
+                        0 0 40px rgba(6, 182, 212, 0.38),
+                        0 0 20px rgba(124, 58, 237, 0.3) !important;
+            border-color: transparent !important;
+            background: #090a10 !important;
+        }
+
+        /* Barra de progreso de lectura superior */
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #06b6d4, #7c3aed, #10b981);
+            z-index: 60;
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Marco reforzado para el botón de WhatsApp */
+        .whatsapp-frame {
+            border: 2px solid #25D366;
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.25);
+            background: linear-gradient(180deg, rgba(37, 211, 102, 0.08) 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        /* ESTILOS DE CARRUSEL CON EFECTO COVERFLOW DE VÍDEOS A LOS LADOS */
+        .carousel-viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 24px 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s cubic-bezier(0.2, 0.85, 0.25, 1);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            flex-shrink: 0;
+            transition: transform 0.5s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.5s ease, filter 0.5s ease;
+            cursor: pointer;
+        }
+
+        .carousel-slide.is-inactive {
+            transform: scale(0.86);
+            opacity: 0.38;
+            filter: brightness(0.65) blur(0.5px);
+        }
+
+        .carousel-slide.is-inactive:hover {
+            opacity: 0.65;
+            transform: scale(0.9);
+            filter: brightness(0.85);
+        }
+
+        .carousel-slide.is-active {
+            transform: scale(1.02);
+            opacity: 1;
+            filter: none;
+            z-index: 20;
+        }
+
+        /* Animación de Borde Fluido para el texto destacado */
+        @keyframes gradientX {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-x {
+            background-size: 200% 200%;
+            animation: gradientX 3s ease infinite;
+        }
+    </style>
+</head>
+<body class="selection:bg-brandCyan selection:text-black">
+
+    <!-- PANTALLA DE CARGA BREVE Y ELEGANTE -->
+    <div id="preloader" role="status" aria-label="Cargando experiencia EASYYOU">
+        <div class="flex flex-col items-center">
+            <div class="font-display font-black text-2xl uppercase tracking-wider text-white">
+                EASYYOU<span class="text-brandCyan">.</span>
+            </div>
+            <div class="text-[11px] font-mono tracking-widest text-zinc-400 uppercase mt-1">
+                Leads + imagen de marca
+            </div>
+            <div class="preloader-bar-bg">
+                <div id="preloader-bar" class="preloader-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra sutil de progreso de scroll -->
+    <div id="reading-progress"></div>
+
+    <!-- Fondo de enfoque borroso al pinchar una tarjeta -->
+    <div id="spotlight-backdrop" aria-label="Cerrar foco" title="Toca en cualquier parte para salir del foco"></div>
+
+    <header class="fixed top-3 left-0 w-full z-50 px-4 sm:px-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between bg-black/85 backdrop-blur-xl border-2 border-white/10 px-5 py-2.5 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.8)]">
+            <a href="#bloque-1" class="flex items-center gap-2 group">
+                <span class="font-display font-extrabold tracking-tighter text-xl uppercase text-white">
+                    EASYYOU<span class="text-brandCyan font-black">.</span>
+                </span>
+                <span class="hidden md:inline-block text-[10px] font-mono tracking-widest text-zinc-400 uppercase bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                    Estudio 2026
+                </span>
+            </a>
+
+            <div class="flex items-center gap-3">
+                <a href="tel:+34623179849" class="btn-magnetic hidden sm:inline-flex items-center gap-2 text-xs font-mono text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:border-brandCyan/50 transition-colors">
+                    <span class="btn-magnetic-fill"></span>
+                    <span class="btn-magnetic-content">
+                        <i class="fa-solid fa-phone text-brandCyan text-[10px]"></i> +34 623 17 98 49
+                    </span>
+                </a>
+                <a href="https://wa.me/34623179849" target="_blank" rel="noopener noreferrer" class="btn-magnetic bg-whatsapp hover:bg-emerald-400 text-black font-bold text-xs px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(37,211,102,0.35)] transition-all">
+                    <span class="btn-magnetic-fill"></span>
+                    <span class="btn-magnetic-content">
+                        <i class="fa-brands fa-whatsapp text-sm font-black"></i>
+                        <span>Contacta con nosotros</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative pt-20">
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE 1: CABECERA & INTRODUCCIÓN CON EL TÍTULO           -->
+        <!-- ========================================================= -->
+        <section id="bloque-1" class="block-noir min-h-[94vh] flex flex-col items-center justify-center px-4 py-24 md:py-32 relative">
+            
+            <div data-parallax="0.08" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brandPurple/20 border border-brandPurple/50 text-brandPurple font-mono text-xs uppercase tracking-widest -rotate-1 mb-8">
+                <span class="w-2 h-2 rounded-full bg-brandPurple animate-ping"></span>
+                <span>[ 01 // EL MANIFIESTO ]</span>
+            </div>
+
+            <!-- LOGO REFERENCIA EXACTA CON SEPARACIÓN CALIBRADA -->
+            <div data-parallax="0.04" class="relative w-full max-w-[560px] px-2 mb-8">
+                <div class="logo-retro-entrance">
+                    <svg viewBox="0 0 740 240" class="w-full h-auto drop-shadow-[0_0_25px_rgba(6,182,212,0.35)]" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <radialGradient id="lensGlass" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#0284c7" />
+                                <stop offset="45%" stop-color="#0369a1" />
+                                <stop offset="70%" stop-color="#082f49" />
+                                <stop offset="100%" stop-color="#030712" />
+                            </radialGradient>
+                            <linearGradient id="circuitCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.85" />
+                                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.95" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Pistas de circuitos tecnológicos cian de fondo -->
+                        <g stroke="url(#circuitCyan)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+                            <path d="M 35,75 L 85,75 L 105,52 L 140,52" />
+                            <path d="M 50,118 L 76,118 L 96,142 L 135,142" />
+                            <path d="M 65,170 L 105,170 L 124,188 L 180,188" />
+                            <path d="M 120,48 L 132,30 L 195,30" />
+                            <path d="M 155,30 L 170,16 L 230,16" />
+                            <path d="M 215,195 L 265,195 L 285,218 L 340,218" />
+                            <path d="M 270,30 L 315,30 L 335,52 L 385,52" />
+                            <path d="M 320,178 L 358,178 L 375,196 L 420,196" />
+                            <path d="M 355,52 L 372,32 L 435,32" />
+                            <path d="M 425,32 L 468,32 L 488,16 L 555,16" />
+                            <path d="M 515,16 L 535,32 L 605,32" />
+                            <path d="M 575,32 L 595,52 L 665,52" />
+                            <path d="M 635,52 L 655,75 L 710,75" />
+                            <path d="M 445,218 L 485,218 L 502,236 L 555,236" />
+                            <path d="M 625,135 L 660,135 L 680,115 L 718,115" />
+
+                            <circle cx="35" cy="75" r="3.2" fill="#00e5ff"/>
+                            <circle cx="195" cy="30" r="3.2" fill="#00e5ff"/>
+                            <circle cx="230" cy="16" r="3.2" fill="#00e5ff"/>
+                            <circle cx="50" cy="118" r="3.2" fill="#00e5ff"/>
+                            <circle cx="65" cy="170" r="3.2" fill="#00e5ff"/>
+                            <circle cx="180" cy="188" r="3.2" fill="#00e5ff"/>
+                            <circle cx="215" cy="195" r="3.2" fill="#00e5ff"/>
+                            <circle cx="340" cy="218" r="3.2" fill="#00e5ff"/>
+                            <circle cx="435" cy="32" r="3.2" fill="#00e5ff"/>
+                            <circle cx="420" cy="196" r="3.2" fill="#00e5ff"/>
+                            <circle cx="555" cy="16" r="3.2" fill="#00e5ff"/>
+                            <circle cx="605" cy="32" r="3.2" fill="#00e5ff"/>
+                            <circle cx="710" cy="75" r="3.2" fill="#00e5ff"/>
+                            <circle cx="718" cy="115" r="3.2" fill="#00e5ff"/>
+                            <circle cx="555" cy="236" r="3.2" fill="#00e5ff"/>
+                        </g>
+
+                        <!-- Contornos de letras con separación holgada entre Y y Y -->
+                        <g font-family="'Syne', 'Space Grotesk', sans-serif" font-weight="800" font-size="104" fill="#05070d" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" text-anchor="middle">
+                            <text x="75" y="150">E</text>
+                            <text x="150" y="150">A</text>
+                            <text x="222" y="150">S</text>
+                            <text x="296" y="150">Y</text>
+                            <text x="382" y="150">Y</text>
+                        </g>
+
+                        <!-- Relleno interior nítido -->
+                        <g font-family="'Syne', 'Space Grotesk', sans-serif" font-weight="800" font-size="104" fill="#03050a" text-anchor="middle">
+                            <text x="75" y="150">E</text>
+                            <text x="150" y="150">A</text>
+                            <text x="222" y="150">S</text>
+                            <text x="296" y="150">Y</text>
+                            <text x="382" y="150">Y</text>
+                        </g>
+
+                        <!-- Objetivo de cámara para la O -->
+                        <g transform="translate(485, 114)">
+                            <circle cx="0" cy="0" r="46" fill="#05070e" stroke="#ffffff" stroke-width="7" />
+                            <circle cx="0" cy="0" r="41" fill="none" stroke="#00e5ff" stroke-width="1.8" stroke-dasharray="4 2.5" opacity="0.8" />
+                            <circle cx="0" cy="0" r="39" fill="url(#lensGlass)" />
+                            <g stroke="#ffffff" stroke-width="2" fill="#0b111e">
+                                <path d="M -30,-12 L 0,-38 L 14,-16 Z" />
+                                <path d="M 14,-16 L 38,-4 L 18,14 Z" />
+                                <path d="M 18,14 L 10,38 L -14,18 Z" />
+                                <path d="M -14,18 L -38,10 L -18,-14 Z" />
+                                <path d="M -18,-14 L -8,-38 L 16,-22 Z" />
+                            </g>
+                            <circle cx="0" cy="0" r="14" fill="#020408" stroke="#00e5ff" stroke-width="2.5" />
+                            <circle cx="3.5" cy="-3.5" r="4" fill="#ffffff" />
+                        </g>
+
+                        <!-- Letra U alineada -->
+                        <text x="586" y="150" font-family="'Syne', 'Space Grotesk', sans-serif" font-weight="800" font-size="104" text-anchor="middle" fill="#03050a" stroke="#ffffff" stroke-width="7" stroke-linejoin="round">U</text>
+                        <text x="586" y="150" font-family="'Syne', 'Space Grotesk', sans-serif" font-weight="800" font-size="104" text-anchor="middle" fill="#03050a">U</text>
+
+                        <!-- AGENCY con estilo manuscrito centrado -->
+                        <g transform="rotate(-3 540 206)">
+                            <text x="540" y="206" text-anchor="middle" font-family="'Caveat', 'Kalam', cursive" font-size="62" font-weight="700" fill="none" stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" letter-spacing="4">AGENCY</text>
+                            <text x="540" y="206" text-anchor="middle" font-family="'Caveat', 'Kalam', cursive" font-size="62" font-weight="700" fill="#ffffff" letter-spacing="4">AGENCY</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- TÍTULO EXACTO SOLICITADO -->
+            <div class="max-w-4xl text-center space-y-6 z-10 px-2">
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-tight">
+                    Buscamos <span class="text-brandCyan">leads para tu negocio</span> mejorando tu <span class="hand-underline">imagen de marca</span> <span class="font-marker font-normal text-xl sm:text-3xl md:text-4xl text-brandPurple inline-block align-middle ml-1 -rotate-1">con nuestro método.</span>
+                </h1>
+
+                <div class="pt-4 flex items-center justify-center gap-3">
+                    <span class="font-marker text-brandCyan text-lg sm:text-2xl -rotate-2">
+                        ¿Quieres ver algunos de nuestros trabajos?
+                    </span>
+                    <span class="hidden sm:inline font-hand text-zinc-400 text-xl">(spoiler: funcionan)</span>
+                </div>
+            </div>
+
+            <!-- Flecha hacia Bloque 2 -->
+            <div class="mt-12 flex flex-col items-center group">
+                <div class="flex items-center gap-2 font-marker text-zinc-400 text-sm mb-1 group-hover:text-brandCyan transition-colors">
+                    <span>Baja por aquí</span>
+                    <i class="fa-solid fa-arrow-down animate-bounce-subtle text-brandCyan"></i>
+                </div>
+
+                <a href="#bloque-2" class="btn-magnetic p-2 transition-transform active:scale-95" aria-label="Ir a Trabajos con clientes">
+                    <span class="btn-magnetic-fill"></span>
+                    <svg class="btn-magnetic-content" width="60" height="85" viewBox="0 0 60 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 28 5 Q 48 35, 18 55 Q 8 68, 30 78" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+                        <path d="M 18 68 L 31 79 L 34 64" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE 2: TRABAJOS CON CLIENTES (FONDO AZULADO INDIGO)     -->
+        <!-- ========================================================= -->
+        <section id="bloque-2" class="block-blueprint curtain-section py-28 md:py-36 px-4 relative overflow-hidden">
+            
+            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brandCyan/10 border border-brandCyan/40 text-brandCyan font-mono text-xs uppercase tracking-widest rotate-1">
+                    <i class="fa-solid fa-play"></i>
+                    <span>[ 02 // TRABAJOS CON CLIENTES ]</span>
+                </div>
+
+                <div class="font-hand text-zinc-400 text-xl sm:text-2xl flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-brandCyan"></i>
+                    <span>"Resultados palpables, grabados y medibles."</span>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto text-center mb-10">
+                <h2 class="text-4xl sm:text-6xl font-display font-black text-white tracking-tight">
+                    Trabajos con <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-white to-brandPurple">clientes:</span>
+                </h2>
+                <p class="font-mono text-xs text-zinc-400 mt-3">Haz clic en los vídeos de los lados o usa las flechas para explorar</p>
+            </div>
+
+            <!-- CARRUSEL PROFESIONAL CLIENTES (3 VÍDEOS CON VISTA LATERAL ASOMANDO) -->
+            <div class="max-w-5xl mx-auto mb-24 relative">
+                
+                <!-- Viewport con overflow visible a los costados -->
+                <div class="carousel-viewport">
+                    <div id="clients-track" class="carousel-track">
+
+                        <!-- VÍDEO CLIENTE 1: video-suarez.mp4 -->
+                        <div class="carousel-slide w-[260px] sm:w-[310px] md:w-[340px] px-2 sm:px-3">
+                            <div class="tilt-card rounded-3xl border-2 border-brandCyan/40 bg-zinc-950 p-4 shadow-2xl">
+                                <div class="flex items-center justify-between mb-3 px-1">
+                                    <span class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan font-mono font-bold text-xs border border-brandCyan/40">Caso #01</span>
+                                    <span class="font-mono text-[11px] text-zinc-400 uppercase">1 de 3</span>
+                                </div>
+                                <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/080c16/06b6d4?text=CASO+CLIENTE+1">
+                                        <source src="video-suarez.mp4" type="video/mp4">
+                                        Tu navegador no soporta vídeo HTML5.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VÍDEO CLIENTE 2: video-sergio.mp4 -->
+                        <div class="carousel-slide w-[260px] sm:w-[310px] md:w-[340px] px-2 sm:px-3">
+                            <div class="tilt-card rounded-3xl border-2 border-brandPurple/40 bg-zinc-950 p-4 shadow-2xl">
+                                <div class="flex items-center justify-between mb-3 px-1">
+                                    <span class="px-2.5 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-mono font-bold text-xs border border-brandPurple/40">Caso #02</span>
+                                    <span class="font-mono text-[11px] text-zinc-400 uppercase">2 de 3</span>
+                                </div>
+                                <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/120b1f/7c3aed?text=CASO+CLIENTE+2">
+                                        <source src="video-sergio.mp4" type="video/mp4">
+                                        Tu navegador no soporta vídeo HTML5.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VÍDEO CLIENTE 3: video-pedro.mp4 -->
+                        <div class="carousel-slide w-[260px] sm:w-[310px] md:w-[340px] px-2 sm:px-3">
+                            <div class="tilt-card rounded-3xl border-2 border-emerald-500/40 bg-zinc-950 p-4 shadow-2xl">
+                                <div class="flex items-center justify-between mb-3 px-1">
+                                    <span class="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold text-xs border border-emerald-500/40">Caso #03</span>
+                                    <span class="font-mono text-[11px] text-zinc-400 uppercase">3 de 3</span>
+                                </div>
+                                <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/061511/10b981?text=CASO+CLIENTE+3">
+                                        <source src="video-pedro.mp4" type="video/mp4">
+                                        Tu navegador no soporta vídeo HTML5.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación Lateral -->
+                <button id="clients-prev" class="btn-magnetic absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/85 border border-zinc-600 text-white flex items-center justify-center hover:bg-brandCyan hover:text-black transition-all shadow-2xl z-30 active:scale-95" aria-label="Caso anterior">
+                    <span class="btn-magnetic-fill"></span>
+                    <i class="btn-magnetic-content fa-solid fa-chevron-left text-base"></i>
+                </button>
+                <button id="clients-next" class="btn-magnetic absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/85 border border-zinc-600 text-white flex items-center justify-center hover:bg-brandCyan hover:text-black transition-all shadow-2xl z-30 active:scale-95" aria-label="Caso siguiente">
+                    <span class="btn-magnetic-fill"></span>
+                    <i class="btn-magnetic-content fa-solid fa-chevron-right text-base"></i>
+                </button>
+
+                <!-- Puntos Indicadores -->
+                <div class="flex justify-center items-center gap-2 mt-4">
+                    <button class="clients-dot w-7 h-2 rounded-full bg-brandCyan transition-all" aria-label="Slide 1"></button>
+                    <button class="clients-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 2"></button>
+                    <button class="clients-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 3"></button>
+                </div>
+            </div>
+
+            <!-- APARTADO DE DEMOSTRACIÓN -->
+            <div class="max-w-6xl mx-auto border-t-2 border-dashed border-zinc-800 pt-16">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h3 class="text-3xl sm:text-5xl font-display font-black text-white">
+                        Mira alguno de nuestros trabajos, somos más de <span class="hand-underline">demostrar</span> y poco hablar:
+                    </h3>
+                </div>
+
+                <!-- ACLARACIÓN DISCRETA 1: VÍDEOS DE EJEMPLO -->
+                <div class="mb-4 flex items-center gap-2 text-xs font-mono text-zinc-400 uppercase tracking-widest max-w-md mx-auto">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brandPurple"></span>
+                    <span>algunos vídeos de los que hacemos</span>
+                </div>
+
+                <!-- CARRUSEL 6 VÍDEOS CON VISTA LATERAL ASOMANDO -->
+                <div class="max-w-5xl mx-auto mb-20 relative">
+                    <div class="carousel-viewport">
+                        <div id="examples-track" class="carousel-track">
+
+                            <!-- VÍDEO 1: lunaywanda.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandPurple/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-mono font-bold text-xs border border-brandPurple/40">Vídeo #01</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">1 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/120b1f/7c3aed?text=VIDEO+1">
+                                            <source src="lunaywanda.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VÍDEO 2: preguntas-espontaneas.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandCyan/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan font-mono font-bold text-xs border border-brandCyan/40">Vídeo #02</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">2 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/080c16/06b6d4?text=VIDEO+2">
+                                            <source src="preguntas-espontaneas.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VÍDEO 3: myflowxx.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandPurple/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-mono font-bold text-xs border border-brandPurple/40">Vídeo #03</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">3 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/120b1f/7c3aed?text=VIDEO+3">
+                                            <source src="myflowxx.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VÍDEO 4: sueno-ia.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandCyan/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan font-mono font-bold text-xs border border-brandCyan/40">Vídeo #04</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">4 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/080c16/06b6d4?text=VIDEO+4">
+                                            <source src="sueno-ia.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VÍDEO 5: jimyus.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandPurple/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-mono font-bold text-xs border border-brandPurple/40">Vídeo #05</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">5 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/120b1f/7c3aed?text=VIDEO+5">
+                                            <source src="jimyus.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VÍDEO 6: embarazo.mp4 -->
+                            <div class="carousel-slide w-[240px] sm:w-[290px] md:w-[320px] px-2 sm:px-3">
+                                <div class="tilt-card rounded-3xl border-2 border-brandCyan/40 bg-zinc-950 p-4 shadow-2xl">
+                                    <div class="flex items-center justify-between mb-3 px-1">
+                                        <span class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan font-mono font-bold text-xs border border-brandCyan/40">Vídeo #06</span>
+                                        <span class="font-mono text-[11px] text-zinc-400 uppercase">6 de 6</span>
+                                    </div>
+                                    <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-inner">
+                                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="https://placehold.co/720x1280/080c16/06b6d4?text=VIDEO+6">
+                                            <source src="embarazo.mp4" type="video/mp4">
+                                            Tu navegador no soporta vídeo HTML5.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Botones de Navegación Lateral -->
+                    <button id="examples-prev" class="btn-magnetic absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/85 border border-zinc-600 text-white flex items-center justify-center hover:bg-brandPurple hover:text-white transition-all shadow-2xl z-30 active:scale-95" aria-label="Vídeo anterior">
+                        <span class="btn-magnetic-fill"></span>
+                        <i class="btn-magnetic-content fa-solid fa-chevron-left text-base"></i>
+                    </button>
+                    <button id="examples-next" class="btn-magnetic absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/85 border border-zinc-600 text-white flex items-center justify-center hover:bg-brandPurple hover:text-white transition-all shadow-2xl z-30 active:scale-95" aria-label="Vídeo siguiente">
+                        <span class="btn-magnetic-fill"></span>
+                        <i class="btn-magnetic-content fa-solid fa-chevron-right text-base"></i>
+                    </button>
+
+                    <!-- Puntos Indicadores -->
+                    <div class="flex justify-center items-center gap-2 mt-4">
+                        <button class="examples-dot w-7 h-2 rounded-full bg-brandPurple transition-all" aria-label="Slide 1"></button>
+                        <button class="examples-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 2"></button>
+                        <button class="examples-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 3"></button>
+                        <button class="examples-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 4"></button>
+                        <button class="examples-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 5"></button>
+                        <button class="examples-dot w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500" aria-label="Slide 6"></button>
+                    </div>
+                </div>
+
+                <!-- ACLARACIÓN DISCRETA 2: WEBS REALES -->
+                <div class="mb-4 flex items-center gap-2 text-xs font-mono text-zinc-400 uppercase tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brandCyan"></span>
+                    <span>algunas webs de las que hacemos</span>
+                </div>
+
+                <!-- 3 WEBS DESARROLLADAS (ENLACES DIRECTOS SIN DESCRIPCIÓN) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <a href="https://www.maisoncleanes.eu" target="_blank" rel="noopener noreferrer" class="tilt-card p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 hover:border-brandCyan transition-all group block">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-brandCyan/10 text-brandCyan flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <span class="font-mono text-xs text-brandCyan group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                <span>Visitar</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </span>
+                        </div>
+                        <div class="font-mono font-bold text-lg text-white group-hover:text-brandCyan transition-colors">
+                            www.maisoncleanes.eu
+                        </div>
+                    </a>
+
+                    <a href="https://www.blackglobalspain.com" target="_blank" rel="noopener noreferrer" class="tilt-card p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 hover:border-brandPurple transition-all group block">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-brandPurple/10 text-brandPurple flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <span class="font-mono text-xs text-brandPurple group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                <span>Visitar</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </span>
+                        </div>
+                        <div class="font-mono font-bold text-lg text-white group-hover:text-brandPurple transition-colors">
+                            www.blackglobalspain.com
+                        </div>
+                    </a>
+
+                    <a href="https://www.myflowxx.com" target="_blank" rel="noopener noreferrer" class="tilt-card p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 hover:border-brandCyan transition-all group block">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-brandCyan/10 text-brandCyan flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <span class="font-mono text-xs text-brandCyan group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                <span>Visitar</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </span>
+                        </div>
+                        <div class="font-mono font-bold text-lg text-white group-hover:text-brandCyan transition-colors">
+                            www.myflowxx.com
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Flecha directa hacia Bloque 3 -->
+                <div class="mt-14 flex flex-col items-center group">
+                    <div class="flex items-center gap-2 font-marker text-zinc-400 text-sm group-hover:text-brandPurple transition-colors">
+                        <span>Pasa al método y a las tarifas</span>
+                        <i class="fa-solid fa-arrow-down text-brandPurple"></i>
+                    </div>
+
+                    <a href="#bloque-3" class="btn-magnetic p-2 transition-transform active:scale-95" aria-label="Ir a Precios">
+                        <span class="btn-magnetic-fill"></span>
+                        <svg class="btn-magnetic-content" width="60" height="85" viewBox="0 0 60 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 30 5 C 10 25, 50 40, 25 60 C 15 70, 35 75, 30 80" stroke="#7c3aed" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+                            <path d="M 20 70 L 30 81 L 40 70" stroke="#7c3aed" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE 3: EL MÉTODO & PRECIOS CLAROS (FONDO VIOLETA OBSIDIANA) -->
+        <!-- ========================================================= -->
+        <section id="bloque-3" class="block-studio curtain-section py-28 md:py-36 px-4 max-w-6xl mx-auto relative my-8">
+
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brandPurple/20 border border-brandPurple/50 text-brandPurple font-mono text-xs uppercase tracking-widest -rotate-1 mb-4">
+                    <span>[ 03 // EL MÉTODO & PRECIOS CLAROS ]</span>
+                </div>
+                <p class="font-hand text-zinc-400 text-xl sm:text-2xl">
+                    Ve haciendo scroll, esto se lee paso a paso:
+                </p>
+            </div>
+
+            <!-- PREGUNTAS SECUENCIALES -->
+            <div class="max-w-3xl mx-auto space-y-6 mb-16">
+                
+                <div class="step-appear p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 shadow-xl flex items-center gap-4 hover:border-brandCyan/50 transition-colors">
+                    <div class="w-12 h-12 rounded-2xl bg-brandCyan/10 border border-brandCyan/30 flex items-center justify-center text-brandCyan font-display font-black text-xl shrink-0">
+                        1
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                        ¿Quieres nuevos clientes?
+                    </p>
+                </div>
+
+                <div class="flex justify-center -my-2 opacity-60">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2 L12 20 M6 14 L12 20 L18 14" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="step-appear p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 shadow-xl flex items-center gap-4 hover:border-brandPurple/50 transition-colors">
+                    <div class="w-12 h-12 rounded-2xl bg-brandPurple/10 border border-brandPurple/30 flex items-center justify-center text-brandPurple font-display font-black text-xl shrink-0">
+                        2
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                        ¿Quieres mejorar la imagen de tu marca?
+                    </p>
+                </div>
+
+                <div class="flex justify-center -my-2 opacity-60">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2 L12 20 M6 14 L12 20 L18 14" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="step-appear p-6 rounded-3xl bg-zinc-950/90 border-2 border-zinc-800 shadow-xl flex items-center gap-4 hover:border-emerald-400/50 transition-colors">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-display font-black text-xl shrink-0">
+                        3
+                    </div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                        ¿Quieres empezar a aportar más valor y que tus clientes te paguen más?
+                    </p>
+                </div>
+
+                <div class="step-appear text-center pt-6 space-y-4">
+                    <p class="font-marker text-2xl sm:text-4xl text-brandCyan -rotate-1">
+                        Pues perfecto, ¿sabes por qué?
+                    </p>
+
+                    <div class="relative p-1 rounded-3xl bg-gradient-to-r from-brandCyan via-brandPurple to-brandCyan animate-gradient-x shadow-[0_0_40px_rgba(124,58,237,0.3)] rotate-1 hover:rotate-0 transition-transform duration-500 mx-auto max-w-2xl">
+                        <div class="bg-zinc-950 rounded-[22px] p-8 md:p-10 h-full w-full flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-brandPurple/10 blur-xl rounded-full"></div>
+                            <p class="relative text-3xl sm:text-5xl font-display font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                                Porque estás en el <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan to-brandPurple">lugar correcto.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOS 3 PASOS A PROCEDER -->
+            <div class="max-w-4xl mx-auto mb-20 relative">
+                <div class="text-center mb-16 step-appear">
+                    <span class="inline-block px-3 py-1 rounded-full bg-brandCyan/10 border border-brandCyan/30 text-brandCyan font-mono text-xs uppercase tracking-widest mb-3">
+                        Paso a paso
+                    </span>
+                    <h3 class="text-3xl sm:text-5xl font-display font-extrabold text-white">
+                        ¿Cómo trabajamos contigo? Los 3 pasos a proceder:
+                    </h3>
+                    <p class="text-zinc-400 text-sm mt-3 max-w-xl mx-auto">
+                        Sin rodeos ni pérdidas de tiempo. Así es como detectamos lo que falla y lo convertimos en clientes:
+                    </p>
+                </div>
+
+                <!-- Timeline Vertical Animado -->
+                <div class="relative space-y-12 before:absolute before:inset-0 before:ml-6 sm:before:ml-8 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-gradient-to-b before:from-brandCyan before:via-brandPurple before:to-emerald-500 before:opacity-30">
+                    
+                    <!-- Paso 1 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group step-appear">
+                        <div class="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-zinc-950 bg-brandCyan text-black font-display font-black text-lg sm:text-2xl absolute left-0 md:left-1/2 -translate-x-1/2 z-10 shadow-[0_0_20px_rgba(6,182,212,0.5)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.8)] transition-all duration-300">
+                            1
+                        </div>
+                        <div class="w-full md:w-[45%] ml-16 sm:ml-24 md:ml-0 tilt-card p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandCyan transition-all text-left group-hover:-translate-y-2">
+                            <h4 class="text-xl sm:text-2xl font-display font-black text-brandCyan mb-3">Llamada y ver qué falla</h4>
+                            <p class="text-sm text-zinc-300 leading-relaxed">
+                                Hacemos una llamada de diagnóstico gratuita. Analizamos a fondo tu negocio actual, detectamos exactamente qué está frenando tus ventas y vemos qué puntos arreglar primero.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:even:flex-row group step-appear">
+                        <div class="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-zinc-950 bg-brandPurple text-white font-display font-black text-lg sm:text-2xl absolute left-0 md:left-1/2 -translate-x-1/2 z-10 shadow-[0_0_20px_rgba(124,58,237,0.5)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(124,58,237,0.8)] transition-all duration-300">
+                            2
+                        </div>
+                        <div class="w-full md:w-[45%] ml-16 sm:ml-24 md:ml-0 tilt-card p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandPurple transition-all text-left md:text-right group-hover:-translate-y-2">
+                            <h4 class="text-xl sm:text-2xl font-display font-black text-brandPurple mb-3">Diseño de la estrategia</h4>
+                            <p class="text-sm text-zinc-300 leading-relaxed">
+                                Trazamos la hoja de ruta a tu medida: elegimos los canales con más retorno, planificamos los guiones, el mensaje para tu cliente ideal y definimos el embudo para que no se escape ni un lead.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group step-appear">
+                        <div class="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-zinc-950 bg-emerald-400 text-black font-display font-black text-lg sm:text-2xl absolute left-0 md:left-1/2 -translate-x-1/2 z-10 shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all duration-300">
+                            3
+                        </div>
+                        <div class="w-full md:w-[45%] ml-16 sm:ml-24 md:ml-0 tilt-card p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-emerald-500 transition-all text-left group-hover:-translate-y-2">
+                            <h4 class="text-xl sm:text-2xl font-display font-black text-emerald-400 mb-3">Ejecución y resultados</h4>
+                            <p class="text-sm text-zinc-300 leading-relaxed">
+                                Nos ponemos manos a la obra: producimos los vídeos, optimizamos tu web y lanzamos campañas. Ajustamos cada métrica para garantizar que tu inversión se traduzca en dinero en cuenta.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESBLOQUEO DE PRECIOS POR EMAIL -->
+            <div id="email-gate-container" class="max-w-xl mx-auto mb-12 p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-brandCyan shadow-[0_0_35px_rgba(6,182,212,0.2)] text-center relative overflow-hidden">
+                <div id="gate-locked-state" class="space-y-4 relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-brandCyan/10 border border-brandCyan/40 mx-auto flex items-center justify-center text-brandCyan text-xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-display font-extrabold text-white">
+                            Desbloquea todas las tarifas al instante
+                        </h3>
+                        <p class="text-xs sm:text-sm text-zinc-400 mt-1">
+                            Escribe tu correo para quitar el borroso y ver los precios exactos:
+                        </p>
+                    </div>
+
+                    <form id="unlock-form" class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto pt-2" onsubmit="return false;">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                            <input 
+                                type="email" 
+                                id="user-email-input" 
+                                placeholder="tu@empresa.com" 
+                                required
+                                class="w-full pl-9 pr-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-brandCyan transition-colors"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="unlock-btn" 
+                            class="btn-magnetic bg-brandCyan hover:bg-cyan-400 text-black font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center transition-transform active:scale-95 shadow-md shrink-0 font-display"
+                        >
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content">
+                                <span>Ver Precios</span>
+                                <i class="fa-solid fa-eye text-xs"></i>
+                            </span>
+                        </button>
+                    </form>
+
+                    <div id="gate-feedback" class="hidden text-xs py-1 px-3 rounded-lg font-mono"></div>
+                </div>
+
+                <div id="gate-unlocked-state" class="hidden space-y-2 relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-mono">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <span>TARIFAS DESBLOQUEADAS</span>
+                    </div>
+                    <p class="text-xs text-zinc-300">
+                        Acceso para: <span id="unlocked-email-display" class="font-mono text-white font-bold"></span>
+                        <button id="relock-btn" class="ml-2 text-[11px] text-brandCyan underline hover:text-white transition-colors">Volver a bloquear</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- SERVICIOS EXPLICADOS SIMPLE (TARIFAS ACTUALIZADAS EXACTAS) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                <!-- Servicio 1: Tu Web -->
+                <div class="tilt-card spotlightable p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandCyan/50 transition-colors flex flex-col justify-between overflow-hidden group">
+                    <div>
+                        <!-- Imagen de referencia Web & SEO -->
+                        <div class="w-full h-40 rounded-2xl overflow-hidden mb-5 border border-zinc-800 relative bg-zinc-900">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop" alt="Diseño web y posicionamiento SEO" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-3 font-mono text-[10px] text-brandCyan bg-black/70 px-2 py-0.5 rounded border border-brandCyan/30 flex items-center gap-1.5 shadow-lg backdrop-blur-md">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-pulse"></span>
+                                Web + SEO en Google
+                            </span>
+                        </div>
+
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                                <span class="text-[10px] font-mono font-bold uppercase text-brandCyan bg-brandCyan/10 px-2.5 py-0.5 rounded">Tu Web</span>
+                                <h4 class="text-2xl font-display font-extrabold text-white mt-2">Una web que vende sola</h4>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="text-3xl font-display font-black text-brandCyan price-blurred price-field">290€</div>
+                                <div class="text-xs text-zinc-400 price-blurred price-field">+ 15€/mes mant.</div>
+                            </div>
+                        </div>
+
+                        <div class="inline-block text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20 mb-3">
+                            Regalo: Dominio incluido
+                        </div>
+
+                        <p class="text-zinc-300 text-sm leading-relaxed">
+                            Montamos tu página web limpia, rápida y persuasiva para que quien entre te escriba directamente. Además, <strong class="text-white">nos encargamos del posicionamiento SEO</strong> para que tu negocio empiece a aparecer y destacar en los resultados de búsqueda de Google cuando los clientes busquen tus servicios.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Servicio 2: Contenido UGC (150€ + comisiones) con la imagen proporcionada -->
+                <div class="tilt-card spotlightable p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandPurple/50 transition-colors flex flex-col justify-between overflow-hidden group">
+                    <div>
+                        <!-- Imagen de referencia UGC solicitada -->
+                        <div class="w-full h-40 rounded-2xl overflow-hidden mb-5 border border-zinc-800 relative bg-zinc-900">
+                            <img src="https://i.ibb.co/0p2XBJ0N/images.jpg" alt="Creadores de Contenido UGC" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/800x400/180d2e/7c3aed?text=CREADORES+UGC'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-3 font-mono text-[10px] text-brandPurple bg-black/70 px-2 py-0.5 rounded border border-brandPurple/30 flex items-center gap-1.5 shadow-lg backdrop-blur-md">
+                                <i class="fa-solid fa-users text-brandPurple"></i>
+                                <span>Equipo Propio UGC</span>
+                            </span>
+                        </div>
+
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                                <span class="text-[10px] font-mono font-bold uppercase text-brandPurple bg-brandPurple/10 px-2.5 py-0.5 rounded">Contenido UGC</span>
+                                <h4 class="text-2xl font-display font-extrabold text-white mt-2">Gente real hablando de ti</h4>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="text-3xl font-display font-black text-brandPurple price-blurred price-field">150€</div>
+                                <div class="text-xs text-zinc-400 price-blurred price-field">+ comisiones por ventas</div>
+                            </div>
+                        </div>
+
+                        <p class="text-zinc-300 text-sm leading-relaxed mb-4">
+                            Se llama <strong class="text-white">Contenido UGC</strong> (User Generated Content). Contamos con un <strong class="text-white">equipo propio de creadores con distintas audiencias y perfiles</strong> que prueban y muestran tu producto o servicio con vídeos 100% reales. Hablamos de tú a tú directamente a tu <strong class="text-white">target objetivo</strong> con varias personas distintas a la vez, multiplicando la confianza y los ángulos de venta.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Servicio 3: Redes Sociales (350€/mes mín. 3 meses) -->
+                <div class="tilt-card spotlightable p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandPurple/50 transition-colors flex flex-col justify-between overflow-hidden group">
+                    <div>
+                        <!-- Imagen de referencia -->
+                        <div class="w-full h-36 rounded-2xl overflow-hidden mb-5 border border-zinc-800 relative bg-zinc-900">
+                            <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=800&auto=format&fit=crop" alt="Estrategia y producción de vídeo para redes" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100" onerror="this.src='https://placehold.co/800x400/120b1f/7c3aed?text=ESTRATEGIA+%2B+IMAGEN+DE+MARCA'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-3 font-mono text-[10px] text-brandPurple bg-black/70 px-2 py-0.5 rounded border border-brandPurple/30">
+                                <i class="fa-solid fa-clapperboard mr-1"></i> Estrategia + 5 vídeos/mes
+                            </span>
+                        </div>
+
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                                <span class="text-[10px] font-mono font-bold uppercase text-brandPurple bg-brandPurple/10 px-2.5 py-0.5 rounded">Crecimiento Continuo</span>
+                                <h4 class="text-2xl font-display font-extrabold text-white mt-2">Contenido redes sociales</h4>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="text-3xl font-display font-black text-brandPurple price-blurred price-field">350€<span class="text-sm font-normal text-zinc-400">/mes</span></div>
+                                <div class="text-xs text-zinc-400">mínimo 3 meses</div>
+                            </div>
+                        </div>
+
+                        <p class="text-zinc-300 text-sm leading-relaxed">
+                            Nos encargamos de <strong class="text-white">crear toda la estrategia de contenido</strong>, grabar y editar 5 vídeos al mes con alta retención. No se trata solo de publicar vídeos al azar, sino de <strong class="text-white">elevar por completo tu imagen de marca</strong> y posicionarte como el referente absoluto de tu sector ante tus clientes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Servicio 4: Publicidad (75€/mes) -->
+                <div class="tilt-card spotlightable p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 hover:border-brandCyan/50 transition-colors flex flex-col justify-between overflow-hidden group">
+                    <div>
+                        <!-- Imagen de referencia -->
+                        <div class="w-full h-36 rounded-2xl overflow-hidden mb-5 border border-zinc-800 relative bg-zinc-900">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" alt="Campañas de publicidad Meta, TikTok y Google" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100" onerror="this.src='https://placehold.co/800x400/080c16/06b6d4?text=ADS+META+%2B+TIKTOK+%2B+GOOGLE'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-3 font-mono text-[10px] text-brandCyan bg-black/70 px-2 py-0.5 rounded border border-brandCyan/30">
+                                <i class="fa-solid fa-bullseye mr-1"></i> Meta, TikTok Ads & Google Ads
+                            </span>
+                        </div>
+
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                                <span class="text-[10px] font-mono font-bold uppercase text-brandCyan bg-brandCyan/10 px-2.5 py-0.5 rounded">Publicidad</span>
+                                <h4 class="text-2xl font-display font-extrabold text-white mt-2">Anuncios en redes sin tirar dinero</h4>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="text-3xl font-display font-black text-brandCyan price-blurred price-field">75€<span class="text-sm font-normal text-zinc-400">/mes</span></div>
+                                <div class="text-xs text-zinc-400">Inversión controlada</div>
+                            </div>
+                        </div>
+
+                        <p class="text-zinc-300 text-sm leading-relaxed">
+                            Gestionamos y optimizamos tus campañas publicitarias en <strong class="text-white">Meta (Instagram y Facebook), TikTok Ads o Google Ads</strong>. Segmentamos al milímetro para impactar a la gente de tu ciudad o nicho con intención de compra real, haciendo que cada euro invertido te traiga clientes con el coste más bajo posible.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Servicio Extra: Servicio a Éxito (110€ por conseguirlo) -->
+                <div class="tilt-card spotlightable md:col-span-2 p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-emerald-500/40">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <span class="text-[10px] font-mono font-bold uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded">Servicio a Éxito</span>
+                            <h4 class="text-2xl font-display font-extrabold text-white mt-2">Hacer que hablen de ti en tu zona</h4>
+                            <p class="text-xs text-zinc-400 mt-1">Damos a conocer tu proyecto donde más se nota.</p>
+                        </div>
+                        <div class="text-left md:text-right shrink-0">
+                            <div class="text-3xl font-display font-black text-emerald-400 price-blurred price-field">110€ <span class="text-xs font-normal text-zinc-300 font-sans">por haberlo conseguido</span></div>
+                            <div class="text-xs font-mono text-emerald-400 font-bold">* Solo nos pagas tras conseguirlo</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-3.5 rounded-2xl bg-zinc-900 text-xs text-zinc-300 border border-zinc-800">
+                            <div class="text-emerald-400 font-bold mb-1">Periódico local</div>
+                            Salir en la prensa de tu barrio destacando lo mejor de tu negocio.
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-zinc-900 text-xs text-zinc-300 border border-zinc-800">
+                            <div class="text-emerald-400 font-bold mb-1">Páginas de compra</div>
+                            Acuerdos con plataformas para que tu servicio salga en los primeros puestos.
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-zinc-900 text-xs text-zinc-300 border border-zinc-800">
+                            <div class="text-emerald-400 font-bold mb-1">Colaboradores</div>
+                            Acuerdos con la persona ideal para recomendar tu trabajo.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TARJETA PACK TODO EN UNO (895€ -> 745€/mes) CON CASILLA ENCUADRADA -->
+            <div class="tilt-card spotlightable relative rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-brandPurple/30 via-zinc-950 to-brandCyan/20 border-2 border-brandPurple shadow-2xl mb-12">
+                
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+                    <div class="space-y-4 text-center lg:text-left">
+                        <span class="inline-block px-3 py-1 rounded bg-brandCyan text-black font-mono font-extrabold text-xs uppercase -rotate-1">
+                            Combo Recomendado
+                        </span>
+                        <h4 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight">
+                            ¿Quieres todo esto en uno para maximizar un <span class="text-brandCyan font-bold inline-block" data-counter="77" data-counter-suffix="%">77%</span> el éxito de tu marca/negocio?
+                        </h4>
+                        <p class="font-mono text-xs text-zinc-300 bg-black/50 px-3 py-1.5 rounded-lg border border-white/10 inline-block">
+                            Mínimo 3 meses de permanencia para garantizar resultados
+                        </p>
+                    </div>
+
+                    <!-- CASILLA DE WHATSAPP ENCUADRADA Y CENTRADA -->
+                    <div class="shrink-0 w-full lg:w-auto whatsapp-frame p-6 sm:p-8 rounded-3xl text-center min-w-[280px]">
+                        <div class="text-zinc-400 line-through font-display text-base font-bold price-blurred price-field">895€ / mes</div>
+                        <div class="text-5xl font-display font-black text-white my-1 price-blurred price-field">
+                            745€ <span class="text-xs font-mono text-brandCyan">/ MES</span>
+                        </div>
+                        <div class="font-marker text-emerald-400 text-sm mb-5 price-blurred price-field">
+                            Ahorras <span data-counter="150" data-counter-suffix="€/mes">150€/mes</span> todo junto
+                        </div>
+
+                        <div class="p-1 rounded-2xl bg-black/60 border border-white/10">
+                            <a href="https://wa.me/34623179849?text=Hola!%20Quiero%20el%20Pack%20Todo%20en%20Uno%20de%20745e/mes" target="_blank" rel="noopener noreferrer" class="btn-magnetic w-full bg-whatsapp hover:bg-emerald-400 text-black font-extrabold py-3.5 px-6 rounded-xl flex items-center justify-center text-xs uppercase font-display shadow-lg">
+                                <span class="btn-magnetic-fill"></span>
+                                <span class="btn-magnetic-content">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Lo quiero por WhatsApp</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALCULADORA INTERACTIVA DE RETORNO ROAS (x2 - x3) -->
+            <div class="tilt-card spotlightable max-w-4xl mx-auto mb-16 p-6 sm:p-8 rounded-3xl bg-zinc-950 border-2 border-zinc-800 shadow-xl">
+                <div class="text-center mb-6">
+                    <span class="inline-block font-mono text-[11px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/30 mb-2">
+                        Simulador Exacto ROAS 200% - 300%
+                    </span>
+                    <h5 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Calcula tu facturación y retorno real</h5>
+                    <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl mx-auto">
+                        Introduce tu facturación actual, tu presupuesto previsto de anuncios y la inversión en la agencia para proyectar con precisión cuánto vas a generar con nuestro método:
+                    </p>
+                </div>
+
+                <!-- 3 CAMPOS DE ENTRADA -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800">
+                        <label for="calc-current-revenue" class="block font-mono text-[11px] text-zinc-400 uppercase tracking-wider mb-1.5">
+                            1. Tu Facturación Actual (€/mes):
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 font-bold text-sm">€</span>
+                            <input 
+                                type="number" 
+                                id="calc-current-revenue" 
+                                value="3000" 
+                                min="0" 
+                                step="100"
+                                class="w-full pl-7 pr-3 py-2.5 rounded-xl bg-zinc-950 border border-zinc-700 text-white font-display font-bold text-base focus:outline-none focus:border-brandCyan transition-colors"
+                            >
+                        </div>
+                        <span class="text-[10px] text-zinc-500 font-mono mt-1 block">Lo que ingresas hoy sin nosotros</span>
+                    </div>
+
+                    <div class="bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800">
+                        <label for="calc-ads-spend" class="block font-mono text-[11px] text-zinc-400 uppercase tracking-wider mb-1.5">
+                            2. Presupuesto Anuncios (€/mes):
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 font-bold text-sm">€</span>
+                            <input 
+                                type="number" 
+                                id="calc-ads-spend" 
+                                value="300" 
+                                min="0" 
+                                step="50"
+                                class="w-full pl-7 pr-3 py-2.5 rounded-xl bg-zinc-950 border border-zinc-700 text-white font-display font-bold text-base focus:outline-none focus:border-brandPurple transition-colors"
+                            >
+                        </div>
+                        <span class="text-[10px] text-zinc-500 font-mono mt-1 block">Inversión en Meta/TikTok/Google</span>
+                    </div>
+
+                    <div class="bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800">
+                        <label for="calc-agency-spend" class="block font-mono text-[11px] text-zinc-400 uppercase tracking-wider mb-1.5">
+                            3. Inversión en Agencia (€/mes):
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 font-bold text-sm">€</span>
+                            <input 
+                                type="number" 
+                                id="calc-agency-spend" 
+                                value="745" 
+                                min="100" 
+                                step="25"
+                                class="w-full pl-7 pr-3 py-2.5 rounded-xl bg-zinc-950 border border-zinc-700 text-white font-display font-bold text-base focus:outline-none focus:border-emerald-400 transition-colors"
+                            >
+                        </div>
+                        <span class="text-[10px] text-emerald-400 font-mono mt-1 block">Pack Todo en Uno recomendado (745€)</span>
+                    </div>
+                </div>
+
+                <!-- RESULTADOS EXACTOS PROYECTADOS -->
+                <div class="bg-black/60 p-5 rounded-2xl border border-white/10 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <div class="border-b md:border-b-0 md:border-r border-zinc-800 pb-3 md:pb-0 md:pr-4 text-center md:text-left">
+                        <div class="text-[11px] font-mono text-zinc-400 uppercase">Inversión Total del Mes:</div>
+                        <div class="text-2xl font-display font-black text-white mt-1" id="calc-total-invested">
+                            1.045€
+                        </div>
+                    </div>
+
+                    <div class="border-b md:border-b-0 md:border-r border-zinc-800 pb-3 md:pb-0 md:pr-4 text-center md:text-left">
+                        <div class="text-[11px] font-mono text-zinc-400 uppercase">Retorno Nuevo Generado (x2 a x3):</div>
+                        <div class="text-2xl font-display font-black text-emerald-400 mt-1">
+                            <span id="calc-min-return">2.090€</span> - <span id="calc-max-return">3.135€</span>
+                        </div>
+                        <div class="text-[10px] text-emerald-300 font-mono">
+                            Beneficio neto nuevo: <span id="calc-net-min" class="font-bold">+1.045€</span> a <span id="calc-net-max" class="font-bold">+2.090€</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-right">
+                        <div class="text-[11px] font-mono text-brandCyan uppercase font-bold">Tu Facturación Total Proyectada:</div>
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brandCyan mt-1">
+                            <span id="calc-projected-min">5.090€</span> - <span id="calc-projected-max">6.135€</span>
+                        </div>
+                        <div class="text-[10px] text-zinc-400 font-mono">
+                            (Base actual + nuevos ingresos generados)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 OPCIONES DE CONTACTO ACTUALIZADAS: PASO SIGUIENTE -->
+            <div class="text-center max-w-2xl mx-auto space-y-6">
+                <span class="inline-block px-3 py-1 rounded-full bg-brandCyan/10 border border-brandCyan/40 text-brandCyan font-mono text-xs uppercase tracking-widest">
+                    Paso siguiente
+                </span>
+                
+                <h5 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight">
+                    ¿Revisamos tu caso en 15 minutos?
+                </h5>
+                
+                <p class="text-zinc-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                    Sin compromiso. Analizamos tus canales actuales y te decimos con total franqueza si nuestro sistema encaja con tu negocio.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/34623179849?text=Hola!%20Quiero%20revisar%20mi%20caso%20en%2015%20minutos" target="_blank" rel="noopener noreferrer" class="btn-magnetic p-5 rounded-2xl bg-zinc-950 border-2 border-whatsapp/40 hover:border-whatsapp hover:bg-whatsapp/10 transition-all flex flex-col items-center justify-center gap-2 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-xl bg-whatsapp/10 text-whatsapp flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <span class="font-display font-black text-sm text-white uppercase tracking-wider">Escribir por WhatsApp</span>
+                            <span class="font-mono text-[11px] text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">Respuesta rápida</span>
+                        </div>
+                    </a>
+
+                    <!-- Llamar Directamente -->
+                    <a href="tel:+34623179849" class="btn-magnetic p-5 rounded-2xl bg-zinc-950 border-2 border-brandCyan/40 hover:border-brandCyan hover:bg-brandCyan/10 transition-all flex flex-col items-center justify-center gap-2 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-xl bg-brandCyan/10 text-brandCyan flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="font-display font-black text-sm text-white uppercase tracking-wider">Llamar Directamente</span>
+                            <span class="font-mono text-xs text-zinc-300 group-hover:text-brandCyan transition-colors">+34 623 17 98 49</span>
+                        </div>
+                    </a>
+
+                    <!-- Enviar Correo -->
+                    <a href="mailto:easyyouagency@gmail.com?subject=Revision%20en%2015%20minutos%20-%20EASYYOU" class="btn-magnetic p-5 rounded-2xl bg-zinc-950 border-2 border-brandPurple/40 hover:border-brandPurple hover:bg-brandPurple/10 transition-all flex flex-col items-center justify-center gap-2 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-xl bg-brandPurple/10 text-brandPurple flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span class="font-display font-black text-sm text-white uppercase tracking-wider">Enviar un Correo</span>
+                            <span class="font-mono text-[11px] text-zinc-300 break-all group-hover:text-brandPurple transition-colors">easyyouagency@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Flecha hacia Bloque 4 -->
+            <div class="mt-20 flex flex-col items-center group">
+                <div class="flex items-center gap-2 font-marker text-zinc-400 text-sm group-hover:text-brandCyan transition-colors">
+                    <span>¿O buscas algo más específico / puntual?</span>
+                    <i class="fa-solid fa-arrow-down text-brandCyan"></i>
+                </div>
+
+                <a href="#bloque-4" class="btn-magnetic p-2 transition-transform active:scale-95" aria-label="Ir a Servicios Puntuales">
+                    <span class="btn-magnetic-fill"></span>
+                    <svg class="btn-magnetic-content" width="60" height="85" viewBox="0 0 60 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 30 5 Q 55 25, 45 45 Q 20 65, 35 78" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+                        <path d="M 22 68 L 35 80 L 46 68" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE 4: SERVICIOS PUNTUALES (FONDO CARBON WORKSHOP)     -->
+        <!-- ========================================================= -->
+        <section id="bloque-4" class="block-workshop curtain-section py-20 md:py-28 px-4 max-w-5xl mx-auto relative my-8">
+            
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-amber-400 text-black font-mono font-extrabold text-xs uppercase tracking-widest rotate-1 mb-3">
+                    <span>[ 04 // SERVICIOS PUNTUALES & PRODUCCIÓN ]</span>
+                </div>
+                <h3 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
+                    Producción Creativa <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-brandCyan">A Demanda</span>
+                </h3>
+                <p class="text-zinc-400 text-sm mt-2 max-w-xl mx-auto">
+                    Servicios específicos y rodajes puntuales sin necesidad de cuota mensual:
+                </p>
+            </div>
+
+            <!-- LISTADO ULTRA SIMPLE: 1 LÍNEA POR SERVICIO CON TÍTULO, PRECIO Y CONTACTAR -->
+            <div class="space-y-3 mb-12">
+
+                <!-- 1. Campaña puntual -->
+                <div class="tilt-card p-4 sm:p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-brandCyan/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brandCyan/10 text-brandCyan flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span class="font-display font-bold text-white text-base">Campaña de 1 Vídeo Profesional</span>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                        <span class="text-xl font-display font-black text-brandCyan price-blurred price-field">desde 350€</span>
+                        <a href="https://wa.me/34623179849?text=Hola!%20Me%20interesa%20la%20Campana%20de%201%20Video" target="_blank" rel="noopener noreferrer" class="btn-magnetic px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-brandCyan hover:text-black border border-white/10 text-xs font-mono font-bold text-white transition-all">
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content flex items-center gap-1.5">
+                                <span>Contactar</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. Reels en boda -->
+                <div class="tilt-card p-4 sm:p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-brandPurple/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brandPurple/10 text-brandPurple flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <span class="font-display font-bold text-white text-base">Grabación de Reels en Boda</span>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                        <span class="text-xl font-display font-black text-brandPurple price-blurred price-field">350€</span>
+                        <a href="https://wa.me/34623179849?text=Hola!%20Me%20interesa%20grabar%20Reels%20en%20boda" target="_blank" rel="noopener noreferrer" class="btn-magnetic px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-brandPurple hover:text-white border border-white/10 text-xs font-mono font-bold text-white transition-all">
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content flex items-center gap-1.5">
+                                <span>Contactar</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Podcast en boda -->
+                <div class="tilt-card p-4 sm:p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-brandPurple/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brandPurple/10 text-brandPurple flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <span class="font-display font-bold text-white text-base">Podcast de Preguntas en tu Boda</span>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                        <span class="text-xl font-display font-black text-brandPurple price-blurred price-field">600€</span>
+                        <a href="https://wa.me/34623179849?text=Hola!%20Me%20interesa%20el%20Podcast%20en%20boda" target="_blank" rel="noopener noreferrer" class="btn-magnetic px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-brandPurple hover:text-white border border-white/10 text-xs font-mono font-bold text-white transition-all">
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content flex items-center gap-1.5">
+                                <span>Contactar</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. Espacio para grabar -->
+                <div class="tilt-card p-4 sm:p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-brandCyan/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brandCyan/10 text-brandCyan flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-door-open"></i>
+                        </div>
+                        <span class="font-display font-bold text-white text-base">Alquiler de Sala Equipada para Grabar</span>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                        <span class="text-xl font-display font-black text-brandCyan price-blurred price-field">15€ / hora</span>
+                        <a href="https://wa.me/34623179849?text=Hola!%20Quiero%20reservar%20la%20sala%20para%20grabar" target="_blank" rel="noopener noreferrer" class="btn-magnetic px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-brandCyan hover:text-black border border-white/10 text-xs font-mono font-bold text-white transition-all">
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content flex items-center gap-1.5">
+                                <span>Contactar</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. Eventos creativos -->
+                <div class="tilt-card p-4 sm:p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-emerald-400/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <span class="font-display font-bold text-white text-base">Organización y Gestión de Eventos Creativos</span>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                        <span class="text-base font-display font-bold text-emerald-400">A consultar</span>
+                        <a href="https://wa.me/34623179849?text=Hola!%20Quiero%20informacion%20sobre%20organizacion%20de%20eventos" target="_blank" rel="noopener noreferrer" class="btn-magnetic px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-emerald-400 hover:text-black border border-white/10 text-xs font-mono font-bold text-white transition-all">
+                            <span class="btn-magnetic-fill"></span>
+                            <span class="btn-magnetic-content flex items-center gap-1.5">
+                                <span>Contactar</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CIERRE FINAL DEL BLOQUE 4 ACTUALIZADO: PASO SIGUIENTE -->
+            <div class="max-w-2xl mx-auto p-8 sm:p-12 rounded-3xl bg-zinc-950 border-2 border-dashed border-zinc-700 text-center space-y-6">
+                <span class="inline-block px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/40 text-amber-400 font-mono text-xs uppercase tracking-widest">
+                    Paso siguiente
+                </span>
+
+                <h4 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight">
+                    ¿Revisamos tu caso en 15 minutos?
+                </h4>
+
+                <p class="text-zinc-300 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+                    Sin compromiso. Analizamos tus canales actuales y te decimos con total franqueza si nuestro sistema encaja con tu negocio.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <a href="https://wa.me/34623179849?text=Hola!%20Quiero%20revisar%20mi%20caso%20en%2015%20minutos" target="_blank" rel="noopener noreferrer" class="btn-magnetic p-4 rounded-2xl bg-zinc-900 border-2 border-whatsapp/40 hover:border-whatsapp hover:bg-whatsapp/10 transition-all flex flex-col items-center justify-center gap-1.5 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-2xl text-whatsapp group-hover:scale-110 transition-transform"></i>
+                            <span class="font-display font-bold text-xs text-white uppercase">Escribir por WhatsApp</span>
+                            <span class="font-mono text-[10px] text-emerald-400 font-bold">Respuesta rápida</span>
+                        </div>
+                    </a>
+
+                    <a href="tel:+34623179849" class="btn-magnetic p-4 rounded-2xl bg-zinc-900 border-2 border-brandCyan/40 hover:border-brandCyan hover:bg-brandCyan/10 transition-all flex flex-col items-center justify-center gap-1.5 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-1.5">
+                            <i class="fa-solid fa-phone text-2xl text-brandCyan group-hover:scale-110 transition-transform"></i>
+                            <span class="font-display font-bold text-xs text-white uppercase">Llamar Directamente</span>
+                            <span class="font-mono text-[10px] text-zinc-400 group-hover:text-brandCyan transition-colors">+34 623 17 98 49</span>
+                        </div>
+                    </a>
+
+                    <a href="mailto:easyyouagency@gmail.com?subject=Revision%20caso%20en%2015%20minutos%20-%20EASYYOU" class="btn-magnetic p-4 rounded-2xl bg-zinc-900 border-2 border-brandPurple/40 hover:border-brandPurple hover:bg-brandPurple/10 transition-all flex flex-col items-center justify-center gap-1.5 group">
+                        <span class="btn-magnetic-fill"></span>
+                        <div class="btn-magnetic-content flex-col items-center gap-1.5">
+                            <i class="fa-solid fa-envelope text-2xl text-brandPurple group-hover:scale-110 transition-transform"></i>
+                            <span class="font-display font-bold text-xs text-white uppercase">Enviar un Correo</span>
+                            <span class="font-mono text-[10px] text-zinc-400 break-all group-hover:text-brandPurple transition-colors">easyyouagency@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="border-t-2 border-dashed border-zinc-800 py-12 px-4 text-xs text-zinc-400">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <span class="font-display font-black text-white text-base tracking-tight">EASYYOU AGENCY</span>
+                <span class="text-zinc-600">//</span>
+                <span class="font-hand text-lg text-brandCyan">"Menos teoría, más leads."</span>
+            </div>
+
+            <div class="flex items-center gap-5 text-base">
+                <a href="https://www.instagram.com/easyyouagency/" target="_blank" rel="noopener noreferrer" class="hover:text-brandCyan transition-colors" title="Instagram @easyyouagency">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://wa.me/34623179849" target="_blank" rel="noopener noreferrer" class="hover:text-whatsapp transition-colors" title="WhatsApp +34 623 17 98 49">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <button id="open-cookies-btn" class="text-zinc-500 hover:text-zinc-300 font-mono text-xs underline transition-colors" title="Configurar cookies">
+                    Cookies
+                </button>
+            </div>
+
+            <div class="font-mono text-[11px] text-zinc-500">
+                © 2026 EASYYOU. Hecho para escalar.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- BANNER Y MODAL DE COOKIES (RGPD / LSSI)                   -->
+    <!-- ========================================================= -->
+    <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-md z-50 bg-zinc-950/95 border-2 border-white/15 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] transform transition-all duration-500 translate-y-32 opacity-0 pointer-events-none">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-9 h-9 rounded-xl bg-brandCyan/10 border border-brandCyan/30 text-brandCyan flex items-center justify-center text-base shrink-0">
+                <i class="fa-solid fa-cookie-bite"></i>
+            </div>
+            <div>
+                <h6 class="font-display font-extrabold text-white text-sm">Control de Cookies</h6>
+                <p class="text-xs text-zinc-400 mt-1 leading-relaxed">
+                    Utilizamos cookies técnicas necesarias y de análisis para optimizar tu experiencia y medir el rendimiento del contenido. Puedes aceptarlas todas o rechazarlas.
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+            <button id="accept-cookies-btn" class="flex-1 bg-brandCyan hover:bg-cyan-300 text-black font-display font-extrabold text-xs py-2.5 px-3 rounded-xl transition-transform active:scale-95 text-center">
+                Aceptar todas
+            </button>
+            <button id="reject-cookies-btn" class="flex-1 bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 text-xs py-2.5 px-3 rounded-xl transition-colors font-mono text-center">
+                Rechazar todas
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // 0. GESTIÓN DEL PRELOADER CINEMÁTICO
+            const preloader = document.getElementById('preloader');
+            const preloaderBar = document.getElementById('preloader-bar');
+            
+            if (preloader) {
+                if (prefersReducedMotion) {
+                    preloader.classList.add('preloader-hidden');
+                } else {
+                    if (preloaderBar) preloaderBar.style.width = '100%';
+                    setTimeout(() => {
+                        preloader.classList.add('preloader-hidden');
+                    }, 800);
+                }
+            }
+
+            // 1. EFECTO PARALLAX SUAVE ACELERADO POR GPU (TRANSFORM ONLY)
+            const parallaxElements = document.querySelectorAll('[data-parallax]');
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+
+            function updateParallax() {
+                if (prefersReducedMotion) return;
+                const scrollY = window.scrollY;
+                parallaxElements.forEach(el => {
+                    const factor = parseFloat(el.getAttribute('data-parallax')) || 0.05;
+                    const offset = scrollY * factor;
+                    el.style.transform = `translate3d(0, ${offset}px, 0)`;
+                });
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                lastScrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // 2. BOTONES MAGNÉTICOS (SEGUIMIENTO SUAVE DEL RATÓN)
+            const magneticButtons = document.querySelectorAll('.btn-magnetic');
+            if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+                magneticButtons.forEach(btn => {
+                    btn.addEventListener('mousemove', (e) => {
+                        const rect = btn.getBoundingClientRect();
+                        const x = e.clientX - (rect.left + rect.width / 2);
+                        const y = e.clientY - (rect.top + rect.height / 2);
+                        // Desplazamiento máximo de 10px para sutileza premium
+                        btn.style.transform = `translate3d(${x * 0.22}px, ${y * 0.22}px, 0)`;
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        btn.style.transform = 'translate3d(0, 0, 0)';
+                    });
+                });
+            }
+
+            // 3. TARJETAS TILT 3D CON BRILLO MOUSE-FOLLOWING
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+                tiltCards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        // Coordenadas para el reflejo de luz radial
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
+
+                        // Cálculo de inclinación 3D (máximo 6.5 grados)
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -5.5;
+                        const rotateY = ((x - centerX) / centerX) * 5.5;
+
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translate3d(0, -4px, 0)`;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)';
+                    });
+                });
+            }
+
+            // 4. CONTADORES NUMÉRICOS ANIMADOS CON EASING SUAVE
+            const counterElements = document.querySelectorAll('[data-counter]');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const endValue = parseInt(target.getAttribute('data-counter'), 10) || 0;
+                        const prefix = target.getAttribute('data-counter-prefix') || '';
+                        const suffix = target.getAttribute('data-counter-suffix') || '';
+                        const duration = 1200; // ms
+                        const startTime = performance.now();
+
+                        function updateCounter(currentTime) {
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Curva cúbica desacelerada
+                            const easeOut = 1 - Math.pow(1 - progress, 3);
+                            const currentVal = Math.round(endValue * easeOut);
+
+                            target.textContent = `${prefix}${currentVal.toLocaleString('es-ES')}${suffix}`;
+
+                            if (progress < 1) {
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                target.textContent = `${prefix}${endValue.toLocaleString('es-ES')}${suffix}`;
+                            }
+                        }
+
+                        requestAnimationFrame(updateCounter);
+                        observer.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.25 });
+
+            counterElements.forEach(el => counterObserver.observe(el));
+
+            // 5. Barra de progreso de lectura superior
+            const readingProgressBar = document.getElementById('reading-progress');
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (totalHeight > 0) {
+                    const progress = (window.scrollY / totalHeight) * 100;
+                    if (readingProgressBar) {
+                        readingProgressBar.style.width = `${progress}%`;
+                    }
+                }
+            }, { passive: true });
+
+            // 6. EFECTO CORTINA / VELO DINÁMICO DE SCROLL (Curtain Reveal)
+            const curtainSections = document.querySelectorAll('.curtain-section');
+            const curtainObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                    } else {
+                        // Hace que el efecto se restablezca al salir de la pantalla (fluidez de entrada y salida)
+                        entry.target.classList.remove('is-revealed');
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            curtainSections.forEach(section => curtainObserver.observe(section));
+
+            // 7. SISTEMA DE ENFOQUE FLUIDO (SPOTLIGHT AL HACER CLICK)
+            const spotlightBackdrop = document.getElementById('spotlight-backdrop');
+            const spotlightItems = document.querySelectorAll('.spotlightable');
+            let currentSpotlighted = null;
+
+            function activateSpotlight(element) {
+                if (currentSpotlighted && currentSpotlighted !== element) {
+                    currentSpotlighted.classList.remove('is-spotlighted');
+                }
+                currentSpotlighted = element;
+                element.classList.add('is-spotlighted');
+                if (spotlightBackdrop) {
+                    spotlightBackdrop.classList.add('is-active');
+                }
+            }
+
+            function clearSpotlight() {
+                if (currentSpotlighted) {
+                    currentSpotlighted.classList.remove('is-spotlighted');
+                    currentSpotlighted = null;
+                }
+                if (spotlightBackdrop) {
+                    spotlightBackdrop.classList.remove('is-active');
+                }
+            }
+
+            spotlightItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input')) {
+                        return;
+                    }
+                    if (item.classList.contains('is-spotlighted')) {
+                        clearSpotlight();
+                    } else {
+                        activateSpotlight(item);
+                    }
+                });
+            });
+
+            if (spotlightBackdrop) {
+                spotlightBackdrop.addEventListener('click', clearSpotlight);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') clearSpotlight();
+            });
+
+            // 8. CARRUSELES CON EFECTO COVERFLOW LATERAL
+            function initCoverflowCarousel(trackId, prevBtnId, nextBtnId, dotClass, activeColorClass = 'bg-brandCyan') {
+                const track = document.getElementById(trackId);
+                const prevBtn = document.getElementById(prevBtnId);
+                const nextBtn = document.getElementById(nextBtnId);
+                const dots = document.querySelectorAll(`.${dotClass}`);
+                if (!track) return;
+
+                const slides = Array.from(track.children);
+                const totalSlides = slides.length;
+                let currentIndex = 0;
+
+                function updateSlides() {
+                    const viewport = track.parentElement;
+                    const viewportCenter = viewport.offsetWidth / 2;
+                    const activeSlide = slides[currentIndex];
+                    
+                    if (!activeSlide) return;
+
+                    const activeSlideCenter = activeSlide.offsetLeft + (activeSlide.offsetWidth / 2);
+                    const targetX = viewportCenter - activeSlideCenter;
+                    track.style.transform = `translate3d(${targetX}px, 0, 0)`;
+
+                    slides.forEach((slide, idx) => {
+                        const video = slide.querySelector('video');
+                        if (idx === currentIndex) {
+                            slide.classList.add('is-active');
+                            slide.classList.remove('is-inactive');
+                        } else {
+                            slide.classList.remove('is-active');
+                            slide.classList.add('is-inactive');
+                            if (video) video.pause();
+                        }
+                    });
+
+                    dots.forEach((dot, idx) => {
+                        if (idx === currentIndex) {
+                            dot.className = `${dotClass} w-7 h-2 rounded-full ${activeColorClass} transition-all`;
+                        } else {
+                            dot.className = `${dotClass} w-2 h-2 rounded-full bg-zinc-700 transition-all hover:bg-zinc-500`;
+                        }
+                    });
+                }
+
+                function goToSlide(index) {
+                    currentIndex = (index + totalSlides) % totalSlides;
+                    updateSlides();
+                }
+
+                if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+                if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+                slides.forEach((slide, idx) => {
+                    slide.addEventListener('click', (e) => {
+                        if (idx === currentIndex && e.target.tagName === 'VIDEO') return;
+                        if (idx !== currentIndex) {
+                            goToSlide(idx);
+                        }
+                    });
+                });
+
+                dots.forEach((dot, idx) => {
+                    dot.addEventListener('click', () => goToSlide(idx));
+                });
+
+                let touchStartX = 0;
+                track.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                }, { passive: true });
+
+                track.addEventListener('touchend', (e) => {
+                    const diff = touchStartX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 40) {
+                        if (diff > 0) goToSlide(currentIndex + 1);
+                        else goToSlide(currentIndex - 1);
+                    }
+                }, { passive: true });
+
+                window.addEventListener('resize', updateSlides);
+                setTimeout(updateSlides, 100);
+            }
+
+            initCoverflowCarousel('clients-track', 'clients-prev', 'clients-next', 'clients-dot', 'bg-brandCyan');
+            initCoverflowCarousel('examples-track', 'examples-prev', 'examples-next', 'examples-dot', 'bg-brandPurple');
+
+            // 9. Calculadora de Retorno ROAS
+            const currentRevInput = document.getElementById('calc-current-revenue');
+            const adsSpendInput = document.getElementById('calc-ads-spend');
+            const agencySpendInput = document.getElementById('calc-agency-spend');
+
+            const totalInvestedEl = document.getElementById('calc-total-invested');
+            const minReturnEl = document.getElementById('calc-min-return');
+            const maxReturnEl = document.getElementById('calc-max-return');
+            const netMinEl = document.getElementById('calc-net-min');
+            const netMaxEl = document.getElementById('calc-net-max');
+
+            const projectedMinEl = document.getElementById('calc-projected-min');
+            const projectedMaxEl = document.getElementById('calc-projected-max');
+
+            function calculateROAS() {
+                if (!minReturnEl || !maxReturnEl) return;
+
+                const currentRevenue = parseFloat(currentRevInput?.value) || 0;
+                const adsSpend = parseFloat(adsSpendInput?.value) || 0;
+                const agencySpend = parseFloat(agencySpendInput?.value) || 0;
+
+                const totalInvestment = adsSpend + agencySpend;
+
+                const generatedMin = Math.round(totalInvestment * 2);
+                const generatedMax = Math.round(totalInvestment * 3);
+
+                const netProfitMin = Math.round(generatedMin - totalInvestment);
+                const netProfitMax = Math.round(generatedMax - totalInvestment);
+
+                const projectedTurnoverMin = Math.round(currentRevenue + generatedMin);
+                const projectedTurnoverMax = Math.round(currentRevenue + generatedMax);
+
+                if (totalInvestedEl) totalInvestedEl.textContent = `${totalInvestment.toLocaleString('es-ES')}€`;
+
+                minReturnEl.textContent = `${generatedMin.toLocaleString('es-ES')}€`;
+                maxReturnEl.textContent = `${generatedMax.toLocaleString('es-ES')}€`;
+
+                if (netMinEl) netMinEl.textContent = `+${netProfitMin.toLocaleString('es-ES')}€`;
+                if (netMaxEl) netMaxEl.textContent = `+${netProfitMax.toLocaleString('es-ES')}€`;
+
+                if (projectedMinEl) projectedMinEl.textContent = `${projectedTurnoverMin.toLocaleString('es-ES')}€`;
+                if (projectedMaxEl) projectedMaxEl.textContent = `${projectedTurnoverMax.toLocaleString('es-ES')}€`;
+            }
+
+            [currentRevInput, adsSpendInput, agencySpendInput].forEach(input => {
+                if (input) input.addEventListener('input', calculateROAS);
+            });
+
+            calculateROAS();
+
+            // 10. Revelado secuencial de elementos al hacer scroll
+            const stepElements = document.querySelectorAll('.step-appear');
+            const stepObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        // Desaparece dinámicamente si se sube o baja
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -20px 0px'
+            });
+
+            stepElements.forEach(el => stepObserver.observe(el));
+
+            // 11. Desbloqueo de precios por Email
+            const unlockForm = document.getElementById('unlock-form');
+            const emailInput = document.getElementById('user-email-input');
+            const gateLockedState = document.getElementById('gate-locked-state');
+            const gateUnlockedState = document.getElementById('gate-unlocked-state');
+            const unlockedEmailDisplay = document.getElementById('unlocked-email-display');
+            const relockBtn = document.getElementById('relock-btn');
+            const gateFeedback = document.getElementById('gate-feedback');
+            const priceElements = document.querySelectorAll('.price-field');
+
+            function showFeedback(msg, isSuccess = true) {
+                if (!gateFeedback) return;
+                gateFeedback.textContent = msg;
+                gateFeedback.className = `text-xs py-1.5 px-3 rounded-lg font-mono inline-block ${
+                    isSuccess ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                }`;
+                gateFeedback.classList.remove('hidden');
+            }
+
+            function unlockPrices(email) {
+                priceElements.forEach(item => {
+                    item.classList.remove('price-blurred');
+                    item.classList.add('price-unblurred');
+                });
+
+                if (unlockedEmailDisplay) unlockedEmailDisplay.textContent = email;
+                if (gateLockedState) gateLockedState.classList.add('hidden');
+                if (gateUnlockedState) gateUnlockedState.classList.remove('hidden');
+
+                try {
+                    localStorage.setItem('easyyou_email_gate', email);
+                    localStorage.setItem('easyyou_prices_unlocked', 'true');
+                } catch (e) {}
+            }
+
+            function lockPrices() {
+                priceElements.forEach(item => {
+                    item.classList.remove('price-unblurred');
+                    item.classList.add('price-blurred');
+                });
+
+                if (gateUnlockedState) gateUnlockedState.classList.add('hidden');
+                if (gateLockedState) gateLockedState.classList.remove('hidden');
+                if (emailInput) emailInput.value = '';
+                if (gateFeedback) gateFeedback.classList.add('hidden');
+
+                try {
+                    localStorage.removeItem('easyyou_email_gate');
+                    localStorage.removeItem('easyyou_prices_unlocked');
+                } catch (e) {}
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+            }
+
+            if (unlockForm) {
+                unlockForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const enteredEmail = emailInput.value.trim();
+
+                    if (!enteredEmail) {
+                        showFeedback('Por favor, escribe tu correo.', false);
+                        emailInput.focus();
+                        return;
+                    }
+
+                    if (!isValidEmail(enteredEmail)) {
+                        showFeedback('Escribe un correo electrónico válido.', false);
+                        emailInput.focus();
+                        return;
+                    }
+
+                    showFeedback('¡Desbloqueando tarifas...', true);
+                    setTimeout(() => {
+                        unlockPrices(enteredEmail);
+                    }, 350);
+                });
+            }
+
+            if (relockBtn) {
+                relockBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    lockPrices();
+                });
+            }
+
+            priceElements.forEach(el => {
+                el.parentElement.addEventListener('click', () => {
+                    if (el.classList.contains('price-blurred')) {
+                        const gateBox = document.getElementById('email-gate-container');
+                        if (gateBox) {
+                            gateBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            if (emailInput) {
+                                emailInput.focus();
+                                showFeedback('Introduce tu email aquí para ver las tarifas 👇', false);
+                            }
+                        }
+                    }
+                });
+            });
+
+            try {
+                const savedStatus = localStorage.getItem('easyyou_prices_unlocked');
+                const savedEmail = localStorage.getItem('easyyou_email_gate');
+                if (savedStatus === 'true' && savedEmail) {
+                    unlockPrices(savedEmail);
+                }
+            } catch (e) {}
+
+            // 12. BANNER DE COOKIES (ACEPTAR / RECHAZAR TODAS)
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptCookiesBtn = document.getElementById('accept-cookies-btn');
+            const rejectCookiesBtn = document.getElementById('reject-cookies-btn');
+            const openCookiesBtn = document.getElementById('open-cookies-btn');
+
+            function showCookieBanner() {
+                if (!cookieBanner) return;
+                cookieBanner.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+                cookieBanner.classList.add('translate-y-0', 'opacity-100');
+            }
+
+            function hideCookieBanner() {
+                if (!cookieBanner) return;
+                cookieBanner.classList.remove('translate-y-0', 'opacity-100');
+                cookieBanner.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+            }
+
+            try {
+                const cookieConsent = localStorage.getItem('easyyou_cookie_consent');
+                if (!cookieConsent) {
+                    setTimeout(showCookieBanner, 1200);
+                }
+            } catch (e) {
+                setTimeout(showCookieBanner, 1200);
+            }
+
+            if (acceptCookiesBtn) {
+                acceptCookiesBtn.addEventListener('click', () => {
+                    try {
+                        localStorage.setItem('easyyou_cookie_consent', 'all');
+                    } catch (e) {}
+                    hideCookieBanner();
+                });
+            }
+
+            if (rejectCookiesBtn) {
+                rejectCookiesBtn.addEventListener('click', () => {
+                    try {
+                        localStorage.setItem('easyyou_cookie_consent', 'rejected');
+                    } catch (e) {}
+                    hideCookieBanner();
+                });
+            }
+
+            if (openCookiesBtn) {
+                openCookiesBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showCookieBanner();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
